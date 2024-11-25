@@ -15,13 +15,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
-      home: const SignUpStep2(),
+      home: const SignUpStep3(),
     );
   }
 }
 
-class SignUpStep2 extends StatelessWidget {
-  const SignUpStep2({super.key});
+class SignUpStep3 extends StatelessWidget {
+  const SignUpStep3({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,49 +30,68 @@ class SignUpStep2 extends StatelessWidget {
         title: const Text("Sign Up"),
 
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
+      body: Padding(
             padding: const EdgeInsets.all(16.0),
+
           child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+
               children: [
-              const Text('Fitness Level', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Text('What is your gaol',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+              ),
+                const SizedBox(height:30),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(onPressed: () {}, child: const Text('Beginner')),
-                ElevatedButton(onPressed: () {}, child: const Text('Intermediate')),
-                ElevatedButton(onPressed: () {}, child: const Text('Expert')),
+
+                ElevatedButton(
+                    onPressed: () {},
+                    child: const Text('Loose Weight')),
+                ElevatedButton(
+                    onPressed: () {},
+                    child: const Text('Gain Muscle')),
+                ElevatedButton(
+                    onPressed: () {},
+                    child: const Text('Definition')),
 
               ],
+
           ),
               const SizedBox(height:20),
-              const TextField(decoration: InputDecoration(
-                  border: OutlineInputBorder(),labelText: 'Age')),
+              const Text('How many times do you have availability for workout?',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
               const SizedBox(height:20),
-              const TextField(decoration: InputDecoration(
-                  border: OutlineInputBorder(),labelText: 'Weight (kg)')),
-              const SizedBox(height:20),
-              const TextField(decoration: InputDecoration(
-                  border: OutlineInputBorder(),labelText: 'Height (cm)')),
-              const SizedBox(height:20),
-              const TextField(decoration: InputDecoration(
-                  border: OutlineInputBorder(),labelText: 'Neck Circumstances (cm)')),
-              const SizedBox(height:20),
-              const TextField(decoration: InputDecoration(
-                  border: OutlineInputBorder(),labelText: 'Waist Circumstances (cm)')),
-              const SizedBox(height:20),
-              const TextField(decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Hip Circumstances (cm)')),
-              const SizedBox(height: 20),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('2')),
+
+              ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('3')),
+              ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('4')),
+              ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('5')),
+            ],
+          ),
+
+
+
               ],
           ),),
-          ),
-        ),
+
+
     );
   }
+
+
 }
 
 
