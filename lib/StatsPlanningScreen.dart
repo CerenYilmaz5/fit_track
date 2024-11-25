@@ -1,44 +1,14 @@
 import 'package:flutter/material.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-
-void changePage(Widget newPage) {
-  navigatorKey.currentState?.push(
-    MaterialPageRoute(builder: (context) => newPage),
-  );
-}
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class StatsPlanning extends StatefulWidget {
+  const StatsPlanning({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<StatsPlanning> createState() => _StatsPlanningState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _StatsPlanningState extends State<StatsPlanning> {
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
             width: 300,
             height: 100,
             child: ElevatedButton.icon(
-              onPressed: () => changePage(const PlaningPage(subject: "Workout",)),
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PlaningPage(subject: "Workout"))),
               label: const Text("Workout Plan", style: TextStyle(fontSize: 30),),
               icon: const Icon(Icons.fitness_center),
             ),
@@ -71,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
             width: 300,
             height: 100,
             child: ElevatedButton.icon(
-              onPressed: () => changePage(const PlaningPage(subject: "Diet",)),
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PlaningPage(subject: "Diet"))),
               label: const Text("Daily Diet", style: TextStyle(fontSize: 30),),
               icon: const Icon(Icons.fastfood),
             ),
@@ -138,8 +108,8 @@ class PlaningPage extends StatelessWidget{
                   Container(
                     margin: const EdgeInsets.fromLTRB(5, 20, 5, 0),
                     child: ElevatedButton.icon(
-                      onPressed: () => changePage(const MyHomePage()),
                       label: const Text("Back"),
+                      onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const StatsPlanning())),
                       icon: const Icon(Icons.arrow_back),
                     ),
                   ),
@@ -190,7 +160,7 @@ class DayButton extends StatelessWidget{
       height: 75,
       margin: const EdgeInsets.fromLTRB(35,20,20,0),
       child: ElevatedButton(
-          onPressed: () => changePage(DayPage(day: day, subject:  subject,)),
+          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => DayPage(day: day, subject: subject))),
           child: Text(
             "Day $day",
             style: const TextStyle(fontSize: 20,),
@@ -221,8 +191,8 @@ class DayPage extends StatelessWidget{
               Row(
                 children: [
                   ElevatedButton.icon(
-                    onPressed: () => changePage( PlaningPage(subject: subject,)),
                     label: const Text("Back"),
+                    onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => PlaningPage(subject: subject))),
                     icon: const Icon(Icons.arrow_back),
                   ),
                   const SizedBox(width: 20,),

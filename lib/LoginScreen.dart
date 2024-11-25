@@ -1,25 +1,5 @@
+import 'package:fit_track/SignUpScreen.dart';
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,//Sağ üstteki Debug yazısını kaldırıyor
-      title: 'Fit Life',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-        useMaterial3: true, //Uygulamanın güncel kalması için
-      ),
-      home: const FitnessLoginPage(title: 'Fit Track '),
-    );
-  }
-}
 
 class FitnessLoginPage extends StatefulWidget {
   const FitnessLoginPage({super.key, required this.title});
@@ -142,9 +122,7 @@ class _FitnessLoginPageState extends State<FitnessLoginPage> {
                       ),
                     ),
                     TextButton(
-                      onPressed: (){
-
-                      },
+                      onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpStep1())),
                       child :const Text (
                         'Sign Up',
                         style: TextStyle(color: Colors.grey),
