@@ -62,27 +62,7 @@ class SignUpStep1 extends StatelessWidget {
   }
 }
 
-import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
-        useMaterial3: true,
-      ),
-      home: const SignUpStep2(),
-    );
-  }
-}
 
 class SignUpStep2 extends StatelessWidget {
   const SignUpStep2({super.key});
@@ -142,27 +122,7 @@ class SignUpStep2 extends StatelessWidget {
 
 
 
-import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
-        useMaterial3: true,
-      ),
-      home: const SignUpStep3(),
-    );
-  }
-}
 
 class SignUpStep3 extends StatelessWidget {
   const SignUpStep3({super.key});
