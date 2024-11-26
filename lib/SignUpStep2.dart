@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'SignUpStep3.dart';
+
 class SignUpStep2 extends StatelessWidget {
   const SignUpStep2({super.key});
 
@@ -47,6 +49,17 @@ class SignUpStep2 extends StatelessWidget {
                     border: OutlineInputBorder(),
                     labelText: 'Hip Circumstances (cm)')),
                 const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SignUpStep3(),
+                      ),
+                    );
+                  },
+                  child: const Text("İleri"),
+                ),
               ],
             ),),
         ),

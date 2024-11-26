@@ -1,3 +1,4 @@
+import 'package:fit_track/StatsPlanningPage.dart';
 import 'package:flutter/material.dart';
 
 class SignUpStep3 extends StatelessWidget {
@@ -63,7 +64,17 @@ class SignUpStep3 extends StatelessWidget {
             ),
 
 
-
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const StatsPlanning(),
+                  ),
+                );
+              },
+              child: const Text("İleri"),
+            )
           ],
         ),),
 

@@ -1,3 +1,4 @@
+import 'package:fit_track/SignUpStep2.dart';
 import 'package:flutter/material.dart';
 
 class SignUpStep1 extends StatelessWidget {
@@ -10,32 +11,42 @@ class SignUpStep1 extends StatelessWidget {
         title: const Text("Sign Up"),
 
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email'),
             ),
-            SizedBox(height:20),
-            TextField(
+            const SizedBox(height:20),
+            const TextField(
               decoration: InputDecoration(border: OutlineInputBorder(),labelText: 'Username'),
             ),
-            SizedBox(height:20),
-            TextField(
+            const SizedBox(height:20),
+            const TextField(
               decoration: InputDecoration(border: OutlineInputBorder(),labelText: 'Password'),
               obscureText: true,
             ),
-            SizedBox(height:20),
-            TextField(
+            const SizedBox(height:20),
+            const TextField(
               decoration: InputDecoration(border: OutlineInputBorder(),labelText: 'Confirm Password'),
               obscureText: true,
             ),
-            SizedBox(height: 20),
-
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SignUpStep2(),
+                  ),
+                );
+              },
+                child: const Text("İleri"),
+            ),
           ],
         ),
       ),
