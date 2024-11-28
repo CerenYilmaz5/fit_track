@@ -40,7 +40,7 @@ class _StatsPlanningState extends State<StatsPlanning> {
                 child: ElevatedButton.icon(
                   onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const WorkoutPage(),
+                      builder: (context) => const WorkoutPage(sparedDays: 3,)// should be assigned to a parameter for connecting to a database
                     ),
                   ),
                   label: const Text(

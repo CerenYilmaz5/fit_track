@@ -107,6 +107,7 @@ class DayPlanningPage extends StatelessWidget {
 
   final int day;
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

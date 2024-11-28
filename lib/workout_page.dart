@@ -1,4 +1,5 @@
 import 'package:fit_track/StatsPlanningPage.dart';
+import 'package:fit_track/BulkProgram.dart';
 import 'package:flutter/material.dart';
 
 
@@ -7,14 +8,27 @@ class WorkoutPage extends StatelessWidget {
 
   const WorkoutPage({
     super.key,
+    required this.sparedDays,
   });
+
+  final int sparedDays;
+
+  List<DayButton> dayButtonsBuilder(int sparedDays){
+    List<DayButton> dayButtons = [];
+    for(int i = 0; i<sparedDays; i++){
+      dayButtons.add(DayButton(day: i+1, sparedDays: sparedDays,));
+    }
+    return dayButtons;
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          children: [
+          children: <Widget>[
             const Padding(
               padding:EdgeInsets.fromLTRB(15, 0, 0, 0),
               child: SizedBox(
@@ -31,13 +45,7 @@ class WorkoutPage extends StatelessWidget {
                   ),
                 ),
               ),
-            const DayButton(day: 1),
-            const DayButton(day: 2),
-            const DayButton(day: 3),
-            const DayButton(day: 4),
-            const DayButton(day: 5),
-            const DayButton(day: 6),
-            const DayButton(day: 7),
+            ...dayButtonsBuilder(sparedDays),
             const SizedBox(height: 60),
             Row(
               mainAxisSize: MainAxisSize.max,
@@ -57,7 +65,6 @@ class WorkoutPage extends StatelessWidget {
                 ),
               ]
             ),
-
           ],
         ),
       ),
@@ -70,9 +77,12 @@ class DayButton extends StatelessWidget {
   const DayButton({
     super.key,
     required this.day,
+    required this.sparedDays,
+
   });
 
   final int day;
+  final int sparedDays;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +94,7 @@ class DayButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () => Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => DayPlanningPage(day: day),
+              builder: (context) => DayPlanningPage(day: day,sparedDays: sparedDays, program: Bulkprogram(sparedDays: sparedDays).getProgram()),
             ),
           ),
           child: Text(
@@ -104,9 +114,17 @@ class DayPlanningPage extends StatelessWidget {
   const DayPlanningPage({
     super.key,
     required this.day,
+    required this.sparedDays,
+    required this.program,
   });
 
   final int day;
+  final int sparedDays;
+  final List<List<String>> program;
+
+  List<Widget> listDailyProgram(int day){
+    return program[day-1].map((String s) => Text(s)).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +138,7 @@ class DayPlanningPage extends StatelessWidget {
                   label: const Text("Back"),
                   onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const WorkoutPage(),
+                      builder: (context) => WorkoutPage(sparedDays: sparedDays),
                     ),
                   ),
                   icon: const Icon(Icons.arrow_back),
@@ -131,6 +149,7 @@ class DayPlanningPage extends StatelessWidget {
                 Text("DAY $day Workout planning"),
               ],
             ),
+            ...listDailyProgram(day),
           ],
         ),
       ),
