@@ -1,11 +1,5 @@
-import 'package:fit_track/StatsPlanningPage.dart';
-import 'package:fit_track/daily_diet_page.dart';
-import 'package:fit_track/workout_page.dart';
+
 import 'package:flutter/material.dart';
-import 'ForgotPasswordPage.dart';
-import 'SignUpStep1.dart';
-import 'SignUpStep2.dart';
-import 'SignUpStep3.dart';
 import 'FitnessLoginPage.dart';
 
 void main() {
@@ -17,9 +11,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const FitnessLoginPage(title: 'Fit Track Login'),
+      home: FitnessLoginPage(title: 'Fit Track Login'),
 
     );
   }

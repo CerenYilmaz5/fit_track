@@ -1,63 +1,96 @@
-import 'package:fit_track/StatsPlanningPage.dart';
 import 'package:flutter/material.dart';
-
-
+import 'package:fit_track/BulkProgram.dart';
+import 'package:fit_track/WeightLoss.dart';
 
 class WorkoutPage extends StatelessWidget {
+  final String goal;
+  final int days;
+  final String fitnessLevel; // Added fitnessLevel
 
   const WorkoutPage({
     super.key,
+    required this.goal,
+    required this.days,
+    required this.fitnessLevel,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Choose the workout program based on the goal and fitness level
+    dynamic program; // Program can be of any type
+    if (goal == "Lose Weight") {
+      program = WeightLossProgram(
+        sparedDays: days,
+        fitnessLevel: fitnessLevel, // Fitness level is passed dynamically
+      );
+    }
+    else if (goal == "Gain Muscle") {
+      program = Bulkprogram(
+        sparedDays: days,
+        fitnessLevel: fitnessLevel, // Fitness level is passed dynamically
+      );
+    }
+    /*
+    else if (goal == "Definition") {
+      program = DefinitionProgram(
+        sparedDays: days,
+        fitnessLevel: fitnessLevel, // Fitness level is passed dynamically
+      );
+    }*/
+
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Workout Planning"),
+        backgroundColor: Colors.blue[700],
+      ),
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Padding(
-              padding:EdgeInsets.fromLTRB(15, 0, 0, 0),
-              child: SizedBox(
-                height: 50,
-                width: 350,
-                child: Card(
-                      child:Padding(
-                        padding: EdgeInsets.fromLTRB(85, 5, 0, 0),
-                        child: Text(
-                          "Workout Planning",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                  ),
+            const SizedBox(height: 20),
+            Center(
+              child: Text(
+                "Goal: $goal",
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blueAccent,
                 ),
+                textAlign: TextAlign.center,
               ),
-            const DayButton(day: 1),
-            const DayButton(day: 2),
-            const DayButton(day: 3),
-            const DayButton(day: 4),
-            const DayButton(day: 5),
-            const DayButton(day: 6),
-            const DayButton(day: 7),
-            const SizedBox(height: 60),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children:[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                  child: ElevatedButton.icon(
-                  label: const Text("Back"),
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const StatsPlanning(),
-                    ),
-                  ),
-                  icon: const Icon(Icons.arrow_back),
-                  ),
-                ),
-              ]
             ),
-
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                itemCount: days,
+                itemBuilder: (context, index) {
+                  return DayButton(
+                    day: index + 1,
+                    program: program,
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue[600],
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
+                    label: const Text("Back"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -66,73 +99,73 @@ class WorkoutPage extends StatelessWidget {
 }
 
 class DayButton extends StatelessWidget {
+  final int day;
+  final dynamic program; // This will be WeightLossProgram, BulkProgram, etc.
 
   const DayButton({
     super.key,
     required this.day,
+    required this.program,
   });
-
-  final int day;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 350,
-      height: 75,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(35, 20, 20, 0),
-        child: ElevatedButton(
-          onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => DayPlanningPage(day: day),
-            ),
+    // Get the exercises for the specific day from the program
+    List<String> exercises = program.getProgram()[day - 1];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue[700],
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
           ),
-          child: Text(
-            "Day $day",
-            style: const TextStyle(
-              fontSize: 20,
-            ),
+        ),
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => WorkoutDayPage(day: day, exercises: exercises),
           ),
+        ),
+        child: Text(
+          "Day $day",
+          style: const TextStyle(fontSize: 18),
         ),
       ),
     );
   }
 }
 
-class DayPlanningPage extends StatelessWidget {
+class WorkoutDayPage extends StatelessWidget {
+  final int day;
+  final List<String> exercises;
 
-  const DayPlanningPage({
+  const WorkoutDayPage({
     super.key,
     required this.day,
+    required this.exercises,
   });
-
-  final int day;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                ElevatedButton.icon(
-                  label: const Text("Back"),
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const WorkoutPage(),
-                    ),
-                  ),
-                  icon: const Icon(Icons.arrow_back),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Text("DAY $day Workout planning"),
-              ],
+      appBar: AppBar(
+        title: Text("Day $day Workout Plan"),
+        backgroundColor: Colors.blue[700],
+      ),
+      body: ListView.builder(
+        itemCount: exercises.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: const Icon(Icons.fitness_center, color: Colors.blueAccent),
+            title: Text(
+              exercises[index],
+              style: TextStyle(fontSize: 16, color: Colors.blue[900]),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

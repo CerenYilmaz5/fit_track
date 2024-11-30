@@ -1,137 +1,71 @@
-import 'package:fit_track/StatsPlanningPage.dart';
+import 'package:fit_track/Diets.dart';
 import 'package:flutter/material.dart';
 
-
-
 class DailyDietPage extends StatelessWidget {
+  final String goal;
 
-  const DailyDietPage({
-    super.key,
-  });
+  const DailyDietPage({super.key, required this.goal});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Daily Diet Plan"),
+        backgroundColor: Colors.blue[700],
+      ),
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Padding(
-              padding:EdgeInsets.fromLTRB(15, 0, 0, 0),
-              child: SizedBox(
-                height: 50,
-                width: 350,
-                child: Card(
-                  child:Padding(
-                    padding: EdgeInsets.fromLTRB(85, 5, 0, 0),
-                    child: Text(
-                      "Dialy Diet Planning",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
+            const SizedBox(height: 20),
+            Center(
+              child: Text(
+                "Goal: $goal",
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blueAccent,
                 ),
+                textAlign: TextAlign.center,
               ),
             ),
-            const DayButton(day: 1),
-            const DayButton(day: 2),
-            const DayButton(day: 3),
-            const DayButton(day: 4),
-            const DayButton(day: 5),
-            const DayButton(day: 6),
-            const DayButton(day: 7),
-            const SizedBox(height: 60),
-            Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children:[
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                    child: ElevatedButton.icon(
-                      label: const Text("Back"),
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const StatsPlanning(),
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 7, // 7 days
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue[700],
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
                       ),
-                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () => _showDietForDay(context, index + 1),
+                      child: Text(
+                        "Day ${index + 1}",
+                        style: const TextStyle(fontSize: 18),
+                      ),
                     ),
-                  ),
-                ]
+                  );
+                },
+              ),
             ),
           ],
         ),
       ),
     );
   }
-}
 
-class DayButton extends StatelessWidget {
-
-  const DayButton({
-    super.key,
-    required this.day,
-  });
-
-  final int day;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 350,
-      height: 75,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(35, 20, 20, 0),
-        child: ElevatedButton(
-          onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => DayPlanningPage(day: day),
-            ),
-          ),
-          child: Text(
-            "Day $day",
-            style: const TextStyle(
-              fontSize: 20,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class DayPlanningPage extends StatelessWidget {
-
-  const DayPlanningPage({
-    super.key,
-    required this.day,
-  });
-
-  final int day;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                ElevatedButton.icon(
-                  label: const Text("Back"),
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const DailyDietPage(),
-                    ),
-                  ),
-                  icon: const Icon(Icons.arrow_back),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Text("DAY $day Daily Diet planning"),
-              ],
-            ),
-          ],
-        ),
+  void _showDietForDay(BuildContext context, int day) {
+    // Navigate to DietPage with the selected goal
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => DietPage(goal: goal),
       ),
     );
   }

@@ -14,7 +14,7 @@ class FitnessLoginPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blue,
         title: Text(title),
       ),
       backgroundColor: Colors.white,
@@ -24,7 +24,7 @@ class FitnessLoginPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Icon(Icons.fitness_center, size: 100, color: Colors.green),
+              const Icon(Icons.fitness_center, size: 100, color: Colors.blue),
               const SizedBox(height: 20),
               const Text(
                 'Welcome to Fit Track!',
@@ -84,7 +84,7 @@ class FitnessLoginPage extends StatelessWidget {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.blue,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -110,7 +110,7 @@ class FitnessLoginPage extends StatelessWidget {
                     },
                     child: const Text(
                       'Forgot Password',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Colors.blue),
                     ),
                   ),
                   TextButton(
@@ -124,7 +124,7 @@ class FitnessLoginPage extends StatelessWidget {
                     },
                     child: const Text(
                       'Sign Up',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Colors.blue),
                     ),
                   )
                 ],
