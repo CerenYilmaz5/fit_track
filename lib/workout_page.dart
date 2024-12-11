@@ -59,7 +59,7 @@ class WorkoutPage extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            
+
             Expanded(
               child: ListView.builder(
                 itemCount: days,
