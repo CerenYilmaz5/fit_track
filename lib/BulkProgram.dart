@@ -1,136 +1,181 @@
-class Bulkprogram {
-  const Bulkprogram({
+class BulkProgram {
+  final int sparedDays;
+  final String fitnessLevel;
+
+  BulkProgram({
     required this.sparedDays,
     required this.fitnessLevel,
   });
 
-  final int sparedDays; // Number of workout days
-  final String fitnessLevel; // "Beginner", "Intermediate", "Advanced"
-
-  // BEGINNER PROGRAMS
-  static List<List<String>> BeginnerTwoDayProgram = [
-    ["Bench Press 3x10", "Dumbbell Press 3x12", "Lat Pulldown (Wide Grip) 3x10", "Two-Handed Cable Row 3x12"],
-    ["Squat 5x12", "Leg Extensions 4x15", "Hamstring Curl 3x15", "Calf Pushdowns 3x15"]
-  ];
-
-  static List<List<String>> BeginnerThreeDayProgram = [
-    ["Bench Press 3x10", "Dumbbell Press 3x12", "Cable Flies 3x15"],
-    ["Lat Pulldown (Wide Grip) 3x10", "Machine Rows 3x10", "Two-Handed Cable Row 3x12"],
-    ["Squat 5x12", "Leg Extensions 4x15", "Hamstring Curl 3x15", "Calf Pushdowns 3x15"]
-  ];
-
-  static List<List<String>> BeginnerFourDayProgram = [
-    ["Bench Press 3x10", "Dumbbell Press 3x12", "Cable Flies 3x15"],
-    ["Lat Pulldown (Wide Grip) 3x10", "Machine Rows 3x10", "Two-Handed Cable Row 3x12"],
-    ["Squat 5x12", "Leg Extensions 4x15", "Hamstring Curl 3x15", "Calf Pushdowns 3x15"],
-    ["Bicep Curls 3x10", "Cable Pushdowns 3x12"]
-  ];
-
-  static List<List<String>> BeginnerFiveDayProgram = [
-    ["Bench Press 3x10", "Dumbbell Press 3x12", "Cable Flies 3x15"],
-    ["Lat Pulldown (Wide Grip) 3x10", "Machine Rows 3x10", "Two-Handed Cable Row 3x12"],
-    ["Squat 5x12", "Leg Extensions 4x15"],
-    ["Bicep Curls 3x10", "Cable Pushdowns 3x12"],
-    ["Hamstring Curl 3x15", "Calf Pushdowns 3x15"]
-  ];
-
-  // INTERMEDIATE PROGRAMS
-  static List<List<String>> IntermediateTwoDayProgram = [
-    ["Bench Press 3x10", "Dumbbell Press 3x12", "Lat Pulldown (Wide Grip) 3x10", "Two-Handed Cable Row 3x12"],
-    ["Squat 5x12", "Leg Extensions 4x15", "Hamstring Curl 3x15", "Calf Pushdowns 3x15"]
-  ];
-
-  static List<List<String>> IntermediateThreeDayProgram = [
-    ["Bench Press 3x10", "Dumbbell Press 3x12", "Cable Flies 3x15"],
-    ["Lat Pulldown (Wide Grip) 3x10", "Machine Rows 3x10", "Two-Handed Cable Row 3x12"],
-    ["Squat 5x12", "Leg Extensions 4x15", "Hamstring Curl 3x15", "Calf Pushdowns 3x15"]
-  ];
-
-  static List<List<String>> IntermediateFourDayProgram = [
-    ["Bench Press 3x10", "Dumbbell Press 3x12", "Cable Flies 3x15"],
-    ["Lat Pulldown (Wide Grip) 3x10", "Machine Rows 3x10", "Two-Handed Cable Row 3x12"],
-    ["Squat 5x12", "Leg Extensions 4x15", "Hamstring Curl 3x15", "Calf Pushdowns 3x15"],
-    ["Bicep Curls 3x10", "Cable Pushdowns 3x12"]
-  ];
-
-  static List<List<String>> IntermediateFiveDayProgram = [
-    ["Bench Press 3x10", "Dumbbell Press 3x12", "Cable Flies 3x15"],
-    ["Lat Pulldown (Wide Grip) 3x10", "Machine Rows 3x10", "Two-Handed Cable Row 3x12"],
-    ["Squat 5x12", "Leg Extensions 4x15"],
-    ["Bicep Curls 3x10", "Cable Pushdowns 3x12"],
-    ["Hamstring Curl 3x15", "Calf Pushdowns 3x15"]
-  ];
-
-  // ADVANCED PROGRAMS
-  static List<List<String>> AdvancedTwoDayProgram = [
-    ["Bench Press 3x10", "Dumbbell Press 3x12", "Lat Pulldown (Wide Grip) 3x10", "Two-Handed Cable Row 3x12"],
-    ["Squat 5x12", "Leg Extensions 4x15", "Hamstring Curl 3x15", "Calf Pushdowns 3x15"]
-  ];
-
-  static List<List<String>> AdvancedThreeDayProgram = [
-    ["Bench Press 3x10", "Dumbbell Press 3x12", "Cable Flies 3x15"],
-    ["Lat Pulldown (Wide Grip) 3x10", "Machine Rows 3x10", "Two-Handed Cable Row 3x12"],
-    ["Squat 5x12", "Leg Extensions 4x15", "Hamstring Curl 3x15", "Calf Pushdowns 3x15"]
-  ];
-
-  static List<List<String>> AdvancedFourDayProgram = [
-    ["Bench Press 3x10", "Dumbbell Press 3x12", "Cable Flies 3x15"],
-    ["Lat Pulldown (Wide Grip) 3x10", "Machine Rows 3x10", "Two-Handed Cable Row 3x12"],
-    ["Squat 5x12", "Leg Extensions 4x15", "Hamstring Curl 3x15", "Calf Pushdowns 3x15"],
-    ["Bicep Curls 3x10", "Cable Pushdowns 3x12"]
-  ];
-
-  static List<List<String>> AdvancedFiveDayProgram = [
-    ["Bench Press 3x10", "Dumbbell Press 3x12", "Cable Flies 3x15"],
-    ["Lat Pulldown (Wide Grip) 3x10", "Machine Rows 3x10", "Two-Handed Cable Row 3x12"],
-    ["Squat 5x12", "Leg Extensions 4x15"],
-    ["Bicep Curls 3x10", "Cable Pushdowns 3x12"],
-    ["Hamstring Curl 3x15", "Calf Pushdowns 3x15"]
-  ];
-
-  // Method to get the program based on fitness level and available days
-  List<List<String>> getProgram() {
+  List<List<Map<String, String>>> getProgram() {
     if (fitnessLevel == "Beginner") {
-      switch (sparedDays) {
-        case 2:
-          return BeginnerTwoDayProgram;
-        case 3:
-          return BeginnerThreeDayProgram;
-        case 4:
-          return BeginnerFourDayProgram;
-        case 5:
-          return BeginnerFiveDayProgram;
-        default:
-          return [[]];
-      }
+      return _beginnerProgram(sparedDays);
     } else if (fitnessLevel == "Intermediate") {
-      switch (sparedDays) {
-        case 2:
-          return IntermediateTwoDayProgram;
-        case 3:
-          return IntermediateThreeDayProgram;
-        case 4:
-          return IntermediateFourDayProgram;
-        case 5:
-          return IntermediateFiveDayProgram;
-        default:
-          return [[]];
-      }
-    } else if (fitnessLevel == "Advanced") {
-      switch (sparedDays) {
-        case 2:
-          return AdvancedTwoDayProgram;
-        case 3:
-          return AdvancedThreeDayProgram;
-        case 4:
-          return AdvancedFourDayProgram;
-        case 5:
-          return AdvancedFiveDayProgram;
-        default:
-          return [[]];
-      }
+      return _intermediateProgram(sparedDays);
     } else {
-      return [[]]; // Invalid fitness level
+      return _expertProgram(sparedDays);
+    }
+  }
+
+  List<List<Map<String, String>>> _beginnerProgram(int days) {
+    if (days == 2) {
+      return [
+        [
+          {"name": "Bench Press (3 x 10)", "details": "Perform 3 sets of 10 bench presses to build chest strength.", "gif": ""},
+          {"name": "Lat Pulldown (3 x 12)", "details": "Use a lat pulldown machine for 3 sets of 12 to target back muscles.", "gif": ""},
+          {"name": "Leg Press (3 x 12)", "details": "Strengthen legs with 3 sets of 12 on the leg press machine.", "gif": ""},
+        ],
+        [
+          {"name": "Incline Dumbbell Press (3 x 10)", "details": "Build upper chest with 3 sets of 10 incline presses.", "gif": ""},
+          {"name": "Seated Row (3 x 12)", "details": "Perform 3 sets of 12 seated rows for back strength.", "gif": ""},
+          {"name": "Weighted Squats (3 x 12)", "details": "Perform 3 sets of 12 weighted squats for leg development.", "gif": ""},
+        ],
+      ];
+    } else if (days == 3) {
+      return [
+        [
+          {"name": "Flat Bench Press (4 x 8)", "details": "Build chest strength with 4 sets of 8 reps.", "gif": ""},
+          {"name": "Pull-ups (3 x 10)", "details": "Perform pull-ups for upper back development.", "gif": ""},
+        ],
+        [
+          {"name": "Overhead Press (3 x 12)", "details": "Strengthen shoulders with 3 sets of 12.", "gif": ""},
+          {"name": "Deadlift (4 x 8)", "details": "Engage the entire posterior chain with 4 sets of deadlifts.", "gif": ""},
+        ],
+        [
+          {"name": "Dumbbell Flyes (3 x 12)", "details": "Isolate the chest muscles with 3 sets of dumbbell flyes.", "gif": ""},
+          {"name": "Leg Curls (3 x 15)", "details": "Focus on hamstrings with 3 sets of leg curls.", "gif": ""},
+        ],
+      ];
+    } else if (days == 4) {
+      return [
+        [
+          {"name": "Incline Bench Press (3 x 10)", "details": "Target upper chest with 3 sets of incline presses.", "gif": ""},
+          {"name": "Lat Pulldown (3 x 12)", "details": "Perform 3 sets of lat pulldowns for back strength.", "gif": ""},
+        ],
+        [
+          {"name": "Seated Dumbbell Shoulder Press (3 x 12)", "details": "Build shoulder muscles with 3 sets of presses.", "gif": ""},
+          {"name": "Barbell Squats (4 x 8)", "details": "Develop leg power with 4 sets of barbell squats.", "gif": ""},
+        ],
+        [
+          {"name": "Chest Dips (3 x 10)", "details": "Focus on lower chest with 3 sets of dips.", "gif": ""},
+          {"name": "Bent-over Rows (4 x 10)", "details": "Strengthen the back with 4 sets of bent-over rows.", "gif": ""},
+        ],
+        [
+          {"name": "Leg Press (3 x 12)", "details": "Perform leg presses to target quadriceps.", "gif": ""},
+          {"name": "Romanian Deadlifts (3 x 12)", "details": "Focus on hamstrings with Romanian deadlifts.", "gif": ""},
+        ],
+      ];
+    }else {
+      return [];
+    }
+  }
+
+  List<List<Map<String, String>>> _intermediateProgram(int days) {
+    if (days == 2) {
+      return [
+        [
+          {"name": "Barbell Bench Press (4 x 8)", "details": "Increase chest strength with 4 sets of bench presses.", "gif": ""},
+          {"name": "Pull-ups (4 x 8)", "details": "Perform pull-ups for upper back development.", "gif": ""},
+          {"name": "Barbell Squats (4 x 10)", "details": "Strengthen legs with 4 sets of barbell squats.", "gif": ""},
+        ],
+        [
+          {"name": "Incline Dumbbell Press (3 x 10)", "details": "Focus on upper chest with 3 sets of incline presses.", "gif": ""},
+          {"name": "Seated Cable Row (3 x 12)", "details": "Develop back muscles with 3 sets of rows.", "gif": ""},
+          {"name": "Leg Extension (3 x 15)", "details": "Target quadriceps with 3 sets of leg extensions.", "gif": ""},
+        ],
+      ];
+    } else if (days == 3) {
+      return [
+        [
+          {"name": "Flat Dumbbell Bench Press (4 x 8)", "details": "Perform flat presses for chest strength.", "gif": ""},
+          {"name": "Bent-over Rows (3 x 10)", "details": "Build back muscles with bent-over rows.", "gif": ""},
+        ],
+        [
+          {"name": "Military Press (3 x 10)", "details": "Focus on shoulder strength with military presses.", "gif": ""},
+          {"name": "Deadlift (4 x 8)", "details": "Engage full body with deadlifts.", "gif": ""},
+        ],
+        [
+          {"name": "Incline Flyes (3 x 12)", "details": "Isolate the chest with incline flyes.", "gif": ""},
+          {"name": "Leg Curls (3 x 15)", "details": "Strengthen hamstrings with leg curls.", "gif": ""},
+        ],
+      ];
+    } else if (days == 4) {
+      return [
+        [
+          {"name": "Incline Bench Press (4 x 10)", "details": "Develop upper chest strength.", "gif": ""},
+          {"name": "Pull-ups (3 x 10)", "details": "Strengthen upper back with pull-ups.", "gif": ""},
+        ],
+        [
+          {"name": "Overhead Dumbbell Press (3 x 12)", "details": "Focus on shoulder muscles.", "gif": ""},
+          {"name": "Weighted Squats (4 x 10)", "details": "Enhance leg power with squats.", "gif": ""},
+        ],
+        [
+          {"name": "Chest Dips (3 x 10)", "details": "Work on chest definition.", "gif": ""},
+          {"name": "T-bar Rows (3 x 12)", "details": "Build back muscles with T-bar rows.", "gif": ""},
+        ],
+        [
+          {"name": "Leg Press (3 x 12)", "details": "Strengthen legs using the leg press machine.", "gif": ""},
+          {"name": "Stiff-leg Deadlifts (3 x 12)", "details": "Focus on hamstrings.", "gif": ""},
+        ],
+      ];
+    }else {
+      return [];
+    }
+  }
+
+  List<List<Map<String, String>>> _expertProgram(int days) {
+    if (days == 2) {
+      return [
+        [
+          {"name": "Flat Bench Press (4 x 8)", "details": "Build chest strength with 4 sets of 8 bench presses.", "gif": ""},
+          {"name": "Barbell Deadlift (4 x 6)", "details": "Improve lower back and hamstring strength with 4 sets of 6 deadlifts.", "gif": ""},
+          {"name": "Overhead Press (4 x 8)", "details": "Develop shoulder and triceps with 4 sets of 8 presses.", "gif": ""},
+        ],
+        [
+          {"name": "Pull-ups (4 x 8)", "details": "Focus on back and biceps with 4 sets of 8 pull-ups.", "gif": ""},
+          {"name": "Weighted Squats (4 x 8)", "details": "Build leg strength with 4 sets of 8 weighted squats.", "gif": ""},
+          {"name": "Barbell Curls (4 x 10)", "details": "Develop biceps with 4 sets of 10 barbell curls.", "gif": ""},
+        ],
+      ];
+    } else if (days == 3) {
+      return [
+        [
+          {"name": "Incline Bench Press (4 x 10)", "details": "Target upper chest with 4 sets of 10 presses.", "gif": ""},
+          {"name": "Barbell Rows (4 x 10)", "details": "Strengthen upper back with 4 sets of 10 rows.", "gif": ""},
+          {"name": "Lateral Raises (4 x 12)", "details": "Isolate shoulder muscles with 4 sets of 12 raises.", "gif": ""},
+        ],
+        [
+          {"name": "Front Squats (4 x 8)", "details": "Focus on quads with 4 sets of 8 front squats.", "gif": ""},
+          {"name": "Romanian Deadlift (4 x 8)", "details": "Target hamstrings with 4 sets of 8 Romanian deadlifts.", "gif": ""},
+          {"name": "Hanging Leg Raises (4 x 12)", "details": "Strengthen core with 4 sets of 12 leg raises.", "gif": ""},
+        ],
+        [
+          {"name": "Chest Dips (4 x 12)", "details": "Work chest and triceps with 4 sets of 12 dips.", "gif": ""},
+          {"name": "Lat Pulldown (4 x 10)", "details": "Develop back with 4 sets of 10 pulldowns.", "gif": ""},
+          {"name": "Face Pulls (4 x 12)", "details": "Enhance rear delts and traps with 4 sets of 12 pulls.", "gif": ""},
+        ],
+      ];
+
+    } else if (days == 4) {
+      return [
+        [
+          {"name": "Flat Bench Press (4 x 8)", "details": "Build chest strength with 4 sets of 8 bench presses.", "gif": ""},
+          {"name": "Incline Dumbbell Press (4 x 10)", "details": "Target upper chest with 4 sets of 10 presses.", "gif": ""},
+        ],
+        [{"name": "Weighted Pull-ups (4 x 8)", "details": "Increase back and biceps strength with 4 sets of 8 weighted pull-ups.", "gif": ""},
+          {"name": "One-Arm Dumbbell Row (4 x 10 per arm)", "details": "Focus on lats with 4 sets of 10 rows per arm.", "gif": ""},
+        ],
+        [
+          {"name": "Overhead Barbell Press (4 x 8)", "details": "Build shoulder and triceps strength with 4 sets of 8 presses.", "gif": ""},
+          {"name": "Upright Rows (4 x 10)", "details": "Work traps and shoulders with 4 sets of 10 rows.", "gif": ""},
+        ],
+        [
+          {"name": "Back Squats (4 x 8)", "details": "Develop lower body strength with 4 sets of 8 squats.", "gif": ""},
+          {"name": "Walking Lunges (4 x 10 per leg)", "details": "Improve leg endurance and balance with 4 sets of 10 lunges per leg.", "gif": ""},
+        ],
+      ];
+    } else {
+      return [];
     }
   }
 }

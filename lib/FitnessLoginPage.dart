@@ -73,7 +73,7 @@ class FitnessLoginPage extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (email.isNotEmpty && password.isNotEmpty) {
+                    if (email.isNotEmpty && password.isNotEmpty) { //Burası or ( || ) olmayacak mı?
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Welcome: $email')),
                       );

@@ -41,7 +41,6 @@ class DietPage extends StatelessWidget {
       },
     };
 
-
     var selectedPlan = dietPlans[goal];
     double waterIntakeInLiters = selectedPlan!['waterIntake'];
     int waterIntakeInCups = (waterIntakeInLiters * 4).toInt();

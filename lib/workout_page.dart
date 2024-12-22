@@ -25,7 +25,7 @@ class WorkoutPage extends StatelessWidget {
     }
     else if (goal == "Gain Muscle")
     {
-      program = Bulkprogram(sparedDays: days, fitnessLevel: fitnessLevel);
+      program = BulkProgram(sparedDays: days, fitnessLevel: fitnessLevel);
     }
     else if (goal == "Definition")
     {

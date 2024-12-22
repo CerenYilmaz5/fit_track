@@ -11,20 +11,13 @@ class DefinitionProgram {
    );
 
   List<List<Map<String, String>>> getProgram() {
-
-    if (fitnessLevel == "Beginner")
-    {
-
+    if (fitnessLevel == "Beginner") {
       return _beginnerProgram(sparedDays);
-
     }
-
-    else if (fitnessLevel == "Intermediate")
-    {
+    else if (fitnessLevel == "Intermediate") {
       return _intermediateProgram(sparedDays);
     }
-    else
-    {
+    else {
       return _expertProgram(sparedDays);
     }
   }
