@@ -5,6 +5,23 @@ class SignUpStep2 extends StatelessWidget {
   SignUpStep2({super.key});
 
   final ValueNotifier<String?> fitnessLevel = ValueNotifier<String?>(null);
+  var ageController = TextEditingController();
+  var weightController = TextEditingController();
+  var heightController = TextEditingController();
+  var neckCircumferenceController = TextEditingController();
+  var waistCircumferenceController = TextEditingController();
+  var hipCircumferenceController = TextEditingController();
+
+
+  void getSignUpStep2Info(){
+    print(ageController.text.trim());
+    print(weightController.text.trim());
+    print(heightController.text.trim());
+    print(neckCircumferenceController.text.trim());
+    print(waistCircumferenceController.text.trim());
+    print(hipCircumferenceController.text.trim());
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +72,7 @@ class SignUpStep2 extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: ageController,
                   decoration: InputDecoration(
                     labelText: 'Age',
                     border: OutlineInputBorder(
@@ -64,6 +82,7 @@ class SignUpStep2 extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: weightController,
                   decoration: InputDecoration(
                     labelText: 'Weight (kg)',
                     border: OutlineInputBorder(
@@ -73,6 +92,7 @@ class SignUpStep2 extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: heightController,
                   decoration: InputDecoration(
                     labelText: 'Height (cm)',
                     border: OutlineInputBorder(
@@ -82,6 +102,7 @@ class SignUpStep2 extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: neckCircumferenceController,
                   decoration: InputDecoration(
                     labelText: 'Neck Circumference (cm)',
                     border: OutlineInputBorder(
@@ -91,6 +112,7 @@ class SignUpStep2 extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: waistCircumferenceController,
                   decoration: InputDecoration(
                     labelText: 'Waist Circumference (cm)',
                     border: OutlineInputBorder(
@@ -100,6 +122,7 @@ class SignUpStep2 extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: hipCircumferenceController,
                   decoration: InputDecoration(
                     labelText: 'Hip Circumference (cm)',
                     border: OutlineInputBorder(
@@ -111,6 +134,7 @@ class SignUpStep2 extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     if (fitnessLevel.value != null) {
+                      getSignUpStep2Info();
                       Navigator.push(
                         context,
                         MaterialPageRoute(

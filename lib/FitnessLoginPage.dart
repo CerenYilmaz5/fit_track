@@ -73,7 +73,7 @@ class FitnessLoginPage extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (email.isNotEmpty && password.isNotEmpty) { //Burası or ( || ) olmayacak mı?
+                    if (email.isNotEmpty && password.isNotEmpty) { // burdaki if firebasede tutulan kullanıcılardan kontrol yapıp giriş sağlayacak
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Welcome: $email')),
                       );
@@ -118,7 +118,7 @@ class FitnessLoginPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SignUpStep1(),
+                          builder: (context) =>  SignUpStep1(),
                         ),
                       );
                     },

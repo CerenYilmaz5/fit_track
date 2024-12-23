@@ -2,7 +2,18 @@ import 'package:flutter/material.dart';
 import 'SignUpStep2.dart';
 
 class SignUpStep1 extends StatelessWidget {
-  const SignUpStep1({super.key});
+  SignUpStep1({super.key});
+
+  var emailController = TextEditingController();
+  var  passwordController = TextEditingController();
+  var  confirmPasswordController = TextEditingController();
+
+
+  void getSignUpStep1Info(){
+    print(emailController.text.trim());
+    print(passwordController.text.trim());
+    print(confirmPasswordController.text.trim());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +33,7 @@ class SignUpStep1 extends StatelessWidget {
               children: [
                 // TextField for Email (Centered and styled like in LoginPage)
                 TextField(
+                  controller: emailController,
                   decoration: InputDecoration(
                     labelText: 'E-Mail', // Matching LoginPage label
                     border: OutlineInputBorder(
@@ -33,6 +45,7 @@ class SignUpStep1 extends StatelessWidget {
 
                 // TextField for Password (Centered and styled like in LoginPage)
                 TextField(
+                  controller:passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password', // Matching LoginPage label
                     border: OutlineInputBorder(
@@ -45,6 +58,7 @@ class SignUpStep1 extends StatelessWidget {
 
                 // TextField for Confirm Password (Centered and styled like in LoginPage)
                 TextField(
+                  controller: confirmPasswordController,
                   decoration: InputDecoration(
                     labelText: 'Confirm Password', // New field for confirmation
                     border: OutlineInputBorder(
@@ -60,6 +74,7 @@ class SignUpStep1 extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
+                      getSignUpStep1Info();
                       Navigator.push(
                         context,
                         MaterialPageRoute(

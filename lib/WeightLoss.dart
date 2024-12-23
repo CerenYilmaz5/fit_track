@@ -237,7 +237,7 @@ class WeightLossProgram {
           {"name": "Jump Rope (4 x 2 mins)", "details": "Burn calories.", "gif": ""},
           {"name": "Side Plank with Hip Dips (4 x 15 per side)", "details": "Improve core stability.", "gif": ""},
         ],
-      ];;
+      ];
     }
   }
 }
