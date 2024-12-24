@@ -1,4 +1,3 @@
-import 'package:fit_track/StatsPlanningPage.dart';
 import 'package:flutter/material.dart';
 import 'SignUpStep3.dart';
 
@@ -13,15 +12,6 @@ class SignUpStep2 extends StatelessWidget {
   var waistCircumferenceController = TextEditingController();
   var hipCircumferenceController = TextEditingController();
 
-  void getSignUpStep2Info(){
-    print(ageController.text.trim());
-    print(weightController.text.trim());
-    print(heightController.text.trim());
-    print(neckCircumferenceController.text.trim());
-    print(waistCircumferenceController.text.trim());
-    print(hipCircumferenceController.text.trim());
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,12 +76,11 @@ class SignUpStep2 extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     if (fitnessLevel.value != null) {
-                      getSignUpStep2Info();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => SignUpStep3(
-                            selectedFitnessLevel: fitnessLevel.value!,
+                            signUpStep2: this,
                           ),
                         ),
                       );

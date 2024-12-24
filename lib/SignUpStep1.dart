@@ -1,4 +1,5 @@
-import 'package:fit_track/StatsPlanningPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'SignUpStep2.dart';
 
@@ -9,10 +10,30 @@ class SignUpStep1 extends StatelessWidget {
   var  passwordController = TextEditingController();
   var  confirmPasswordController = TextEditingController();
 
-  void getSignUpStep1Info(){
-    print(emailController.text.trim());
-    print(passwordController.text.trim());
-    print(confirmPasswordController.text.trim());
+  Future<void> signUp() async {
+    String email = emailController.text.trim();
+    final RegExp emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+    if(emailRegex.hasMatch(email)){
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: passwordController.text.trim(),
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+        }
+      } catch (e) {
+        print(e);
+      }
+    }else{
+      print("enter a valid email format");
+    }
+
   }
 
   @override
@@ -74,7 +95,7 @@ class SignUpStep1 extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      getSignUpStep1Info();
+                      signUp();
                       Navigator.push(
                         context,
                         MaterialPageRoute(

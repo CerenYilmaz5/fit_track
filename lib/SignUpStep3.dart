@@ -1,12 +1,42 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fit_track/SignUpStep2.dart';
 import 'package:fit_track/StatsPlanningPage.dart';
 import 'package:flutter/material.dart';
 
 class SignUpStep3 extends StatelessWidget {
-  final String selectedFitnessLevel; // Required fitness level
   final ValueNotifier<String?> selectedGoal = ValueNotifier<String?>(null);
   final ValueNotifier<int?> availableDays = ValueNotifier<int?>(null);
+  final SignUpStep2 signUpStep2;
 
-  SignUpStep3({super.key, required this.selectedFitnessLevel});
+  SignUpStep3({super.key, required this.signUpStep2});
+
+  Future<void> addUserDetails() async {
+    try {
+      // Get the current user
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        // Create or update a Firestore document for the user
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'age': signUpStep2.ageController.text.trim(),
+          'weight': signUpStep2.weightController.text.trim(),
+          'height': signUpStep2.heightController.text.trim(),
+          'neck_circumference': signUpStep2.neckCircumferenceController.text.trim(),
+          'waist_circumference': signUpStep2.waistCircumferenceController.text.trim(),
+          'hip_circumference': signUpStep2.hipCircumferenceController.text.trim(),
+          'goal':selectedGoal.value!,
+          'available_days':availableDays.value!,
+          'fitness_level':signUpStep2.fitnessLevel.value!,
+        });
+        print("User details added to Firestore");
+      } else {
+        print("No user is signed in");
+      }
+    } catch (e) {
+      print("Error adding user details: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,13 +119,14 @@ class SignUpStep3 extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 if (selectedGoal.value != null && availableDays.value != null) {
+                  addUserDetails();
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => StatsPlanning(
                         goal: selectedGoal.value!,
                         days: availableDays.value!,
-                        fitnessLevel: selectedFitnessLevel, // Pass fitness level
+                        fitnessLevel: signUpStep2.fitnessLevel.value!, // Pass fitness level
                       ),
                     ),
                   );

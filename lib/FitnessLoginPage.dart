@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fit_track/StatsPlanningPage.dart';
 import 'package:flutter/material.dart';
 import 'ForgotPasswordPage.dart';
 import 'SignUpStep1.dart';
@@ -5,7 +8,49 @@ import 'SignUpStep1.dart';
 class FitnessLoginPage extends StatelessWidget {
   final String title;
 
-  const FitnessLoginPage({super.key, required this.title});
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+
+  FitnessLoginPage({super.key, required this.title});
+
+  Future<void> login(BuildContext context) async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+    try {
+      // Sign in the user
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (userCredential.user != null) {
+        // Get the currently signed-in user
+        User? user = FirebaseAuth.instance.currentUser;
+
+        if (user != null) {
+          // Fetch the user's goal from Firestore
+          DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+          // Navigate to StatsPlanning
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => StatsPlanning(
+                goal: userDoc['goal'],
+                days: userDoc['available_days'], // Pass available days
+                fitnessLevel: userDoc['fitness_level'], // Pass fitness level
+              ),
+            ),
+          );
+
+          print("User signed in and navigated to StatsPlanning");
+        }
+      } else {
+        print("No user is signed in");
+      }
+    } catch (e) {
+      print("Error logging in: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +89,12 @@ class FitnessLoginPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
+
               TextField(
                 onChanged: (value) {
                   email = value;
                 },
+                controller: emailController,
                 decoration: InputDecoration(
                   labelText: 'E-Mail',
                   border: OutlineInputBorder(
@@ -60,6 +107,7 @@ class FitnessLoginPage extends StatelessWidget {
                 onChanged: (value) {
                   password = value;
                 },
+                controller: passwordController,
                 obscureText: true, // Secure text for passwords
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -73,10 +121,11 @@ class FitnessLoginPage extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (email.isNotEmpty && password.isNotEmpty) { // burdaki if firebasede tutulan kullanıcılardan kontrol yapıp giriş sağlayacak
+                    if (email.isNotEmpty && password.isNotEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Welcome: $email')),
                       );
+                      login(context); // Pass the BuildContext
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Please fill all fields!')),
