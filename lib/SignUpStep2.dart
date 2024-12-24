@@ -1,3 +1,4 @@
+import 'package:fit_track/StatsPlanningPage.dart';
 import 'package:flutter/material.dart';
 import 'SignUpStep3.dart';
 
@@ -11,7 +12,6 @@ class SignUpStep2 extends StatelessWidget {
   var neckCircumferenceController = TextEditingController();
   var waistCircumferenceController = TextEditingController();
   var hipCircumferenceController = TextEditingController();
-
 
   void getSignUpStep2Info(){
     print(ageController.text.trim());
@@ -71,65 +71,17 @@ class SignUpStep2 extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                TextField(
-                  controller: ageController,
-                  decoration: InputDecoration(
-                    labelText: 'Age',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
+                UserTextField(text: 'Age', controller: ageController),
                 const SizedBox(height: 20),
-                TextField(
-                  controller: weightController,
-                  decoration: InputDecoration(
-                    labelText: 'Weight (kg)',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
+                UserTextField(text: 'Weight (kg)', controller: weightController),
                 const SizedBox(height: 20),
-                TextField(
-                  controller: heightController,
-                  decoration: InputDecoration(
-                    labelText: 'Height (cm)',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
+                UserTextField(text: 'Height (cm)', controller: heightController),
                 const SizedBox(height: 20),
-                TextField(
-                  controller: neckCircumferenceController,
-                  decoration: InputDecoration(
-                    labelText: 'Neck Circumference (cm)',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
+                UserTextField(text: 'Neck Circumference (cm)', controller: neckCircumferenceController),
                 const SizedBox(height: 20),
-                TextField(
-                  controller: waistCircumferenceController,
-                  decoration: InputDecoration(
-                    labelText: 'Waist Circumference (cm)',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
+                UserTextField(text: 'Waist Circumference (cm)', controller: waistCircumferenceController),
                 const SizedBox(height: 20),
-                TextField(
-                  controller: hipCircumferenceController,
-                  decoration: InputDecoration(
-                    labelText: 'Hip Circumference (cm)',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
+                UserTextField(text: 'Hip Circumference (cm)', controller: hipCircumferenceController),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
@@ -177,6 +129,26 @@ class SignUpStep2 extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class UserTextField extends StatelessWidget{
+  const UserTextField({super.key,required this.text ,required this.controller});
+  final TextEditingController controller;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: text,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
         ),
       ),
     );

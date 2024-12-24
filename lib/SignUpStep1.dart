@@ -1,3 +1,4 @@
+import 'package:fit_track/StatsPlanningPage.dart';
 import 'package:flutter/material.dart';
 import 'SignUpStep2.dart';
 
@@ -7,7 +8,6 @@ class SignUpStep1 extends StatelessWidget {
   var emailController = TextEditingController();
   var  passwordController = TextEditingController();
   var  confirmPasswordController = TextEditingController();
-
 
   void getSignUpStep1Info(){
     print(emailController.text.trim());
