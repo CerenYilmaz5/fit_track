@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'SignUpStep2.dart';
 
@@ -9,10 +10,22 @@ class SignUpStep1 extends StatelessWidget {
   var  confirmPasswordController = TextEditingController();
 
 
-  void getSignUpStep1Info(){
+  void getSignUpStep1Info()async{
+    var collection = FirebaseFirestore.instance.collection("users");
+    collection.add({
+      //"email":emailController.text.trim(),
+      //"password":passwordController.text.trim(),
+      "email":"basar@hotmail.com",
+      "password":"ruhi1234",
+    });
+
+    var num = await FirebaseFirestore.instance.collection("users").get();
+
     print(emailController.text.trim());
     print(passwordController.text.trim());
     print(confirmPasswordController.text.trim());
+
+
   }
 
   @override

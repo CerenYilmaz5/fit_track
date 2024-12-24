@@ -224,7 +224,7 @@ class DefinitionProgram {
     {
       return [
         [
-          {"name": "Push-ups (3 x 12)", "details": "Build upper body strength with 3 sets of 12 push-ups."},
+          {"name": "Push-ups (3 x 12)", "details": "Build upper body strength with 3 sets of 12 push-ups.","gif":"lib/assets/male-barbell-bench-press-front.gif"},
           {"name": "Dumbbell Chest Press (3 x 10)", "details": "Perform 3 sets of 10 chest presses."},
         ],
         [

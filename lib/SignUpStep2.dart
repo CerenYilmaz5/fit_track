@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'SignUpStep3.dart';
 
@@ -14,6 +15,15 @@ class SignUpStep2 extends StatelessWidget {
 
 
   void getSignUpStep2Info(){
+    var collection = FirebaseFirestore.instance.collection("users");
+    collection.add({
+      //"email":emailController.text.trim(),
+      //"password":passwordController.text.trim(),
+      "age":"",
+      "height":"",
+    });
+
+
     print(ageController.text.trim());
     print(weightController.text.trim());
     print(heightController.text.trim());
