@@ -83,4 +83,5 @@ class DefaultFirebaseOptions {
     authDomain: 'fit-track-291a2.firebaseapp.com',
     storageBucket: 'fit-track-291a2.firebasestorage.app',
   );
+
 }

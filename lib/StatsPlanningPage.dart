@@ -123,7 +123,7 @@ class StatsPlanning extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DailyDietPage(goal: goal),
+                      builder: (context) => DailyDietPage(goal: goal, bmi: 0,dailyCalories: 0,),
                     ),
                   );
                 },
