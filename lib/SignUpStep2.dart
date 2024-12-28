@@ -5,12 +5,15 @@ class SignUpStep2 extends StatelessWidget {
   SignUpStep2({super.key});
 
   final ValueNotifier<String?> fitnessLevel = ValueNotifier<String?>(null);
+  final ValueNotifier<String?> gender = ValueNotifier<String?>(null);
   var ageController = TextEditingController();
   var weightController = TextEditingController();
   var heightController = TextEditingController();
   var neckCircumferenceController = TextEditingController();
   var waistCircumferenceController = TextEditingController();
   var hipCircumferenceController = TextEditingController();
+
+
 
 
   @override
@@ -74,6 +77,39 @@ class SignUpStep2 extends StatelessWidget {
                         ],
                       );
                     },
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Select Your Gender',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  ValueListenableBuilder<String?>(
+                      valueListenable: gender,
+                      builder: (context, value, child) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            for (var g in ['Male', 'Female'])
+                              ElevatedButton(
+                                onPressed: () {
+                                  gender.value = g.toLowerCase();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: value == g.toLowerCase()
+                                      ? Colors.blue
+                                      : const Color(0x0000000F),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 10),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                                child: Text(g,style: const TextStyle(color: Colors.white,)),
+                              ),
+                          ],
+                        );
+                      },
                   ),
                   const SizedBox(height: 20),
                   UserTextField(text: 'Age', controller: ageController,),

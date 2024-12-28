@@ -1,13 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fit_track/EventPage.dart';
 import 'package:fit_track/daily_diet_page.dart';
 import 'package:fit_track/workout_page.dart';
 import 'package:flutter/material.dart';
 
-
 class StatsPlanning extends StatelessWidget {
   final String goal;
   final int days;
   final String fitnessLevel;
+
 
   const StatsPlanning({
     super.key,
@@ -15,6 +17,8 @@ class StatsPlanning extends StatelessWidget {
     required this.days,
     required this.fitnessLevel,
   });
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,19 +56,22 @@ class StatsPlanning extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   MyStatsTextBox(
-                    buttonName: "Body Count Index",
+                    buttonName: "Body Mass Index",
                     icon: Icons.monitor_heart,
                     gradientColors: [Colors.teal, Colors.greenAccent],
+                    statKey: "bmi",
                   ),
                   MyStatsTextBox(
-                    buttonName: "Body Fat Rate",
+                    buttonName: "Body Fat Percentage",
                     icon: Icons.water_drop,
                     gradientColors: [Colors.pinkAccent, Colors.redAccent],
+                    statKey: "bfp",
                   ),
                   MyStatsTextBox(
                     buttonName: "Daily Calorie Intake",
                     icon: Icons.local_fire_department,
                     gradientColors: [Colors.orange, Colors.deepOrange],
+                    statKey: "daily_calories",
                   ),
                 ],
               ),
@@ -134,13 +141,32 @@ class MyStatsTextBox extends StatelessWidget {
   final String buttonName;
   final IconData icon;
   final List<Color> gradientColors;
+  final String statKey;
 
   const MyStatsTextBox({
     super.key,
     required this.buttonName,
     required this.icon,
     required this.gradientColors,
+    required this.statKey,
   });
+
+  Future<String> getStats(String stat) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+        return userDoc[stat]?.toString() ?? "N/A"; // Return stat value or "N/A" if missing
+      } else {
+        print("No user is signed in");
+        return "N/A";
+      }
+    } catch (e) {
+      print("Error fetching stat: $e");
+      return "Error";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,6 +200,30 @@ class MyStatsTextBox extends StatelessWidget {
                 color: Colors.white,
               ),
               const SizedBox(height: 10),
+              FutureBuilder<String>(
+                future: getStats(statKey),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator(color: Colors.white);
+                  } else if (snapshot.hasError) {
+                    return const Text(
+                      "Error",
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    );
+                  } else {
+                    return Text(
+                      snapshot.data ?? "N/A",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 10),
               Text(
                 buttonName,
                 style: const TextStyle(
@@ -181,12 +231,11 @@ class MyStatsTextBox extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
-
                 textAlign: TextAlign.center,
               ),
             ],
-            ),
           ),
+        ),
       ),
     );
   }
