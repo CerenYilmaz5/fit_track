@@ -43,10 +43,26 @@ class SignUpStep3 extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sign Up"),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.grey,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+    body: Stack(
+      children: [
+        Container(
+          decoration:  BoxDecoration(
+            //color: Colors.black.withOpacity(0.3),
+            image: DecorationImage(image: AssetImage("lib/assets/deneme_resim.jpeg"),
+              fit: BoxFit.cover,
+            ),),),
+
+        Center(
+        child: SingleChildScrollView(
+        child:Container(
+          margin: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(20),
+          ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -69,14 +85,14 @@ class SignUpStep3 extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: value == goal
                               ? Colors.blue
-                              : const Color(0xFFB3E5FC),
+                              : const Color(0x0000000F),
                           padding: const EdgeInsets.symmetric(
                               vertical: 15, horizontal: 10),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
-                        child: Text(goal),
+                        child: Text(goal,style: const TextStyle(color: Colors.white,),),
                       ),
                   ],
                 );
@@ -102,14 +118,14 @@ class SignUpStep3 extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: value == days
                               ? Colors.blue
-                              : const Color(0xFFB3E5FC),
+                              : const Color(0x0000000F),
                           padding: const EdgeInsets.symmetric(
                               vertical: 15, horizontal: 20),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
-                        child: Text('$days'),
+                        child: Text('$days',style: const TextStyle(color: Colors.white,),),
                       ),
                   ],
                 );
@@ -133,7 +149,7 @@ class SignUpStep3 extends StatelessWidget {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: Colors.black,
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
@@ -146,7 +162,11 @@ class SignUpStep3 extends StatelessWidget {
             ),
           ],
         ),
-      ),
+          ),
+        ),
+        ),
+      ],
+    ),
     );
   }
 }

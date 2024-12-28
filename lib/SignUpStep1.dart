@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
 import 'SignUpStep2.dart';
 
@@ -7,15 +6,15 @@ class SignUpStep1 extends StatelessWidget {
   SignUpStep1({super.key});
 
   var emailController = TextEditingController();
-  var  passwordController = TextEditingController();
-  var  confirmPasswordController = TextEditingController();
+  var passwordController = TextEditingController();
+  var confirmPasswordController = TextEditingController();
 
   Future<void> signUp() async {
     String email = emailController.text.trim();
     final RegExp emailRegex = RegExp(
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
     );
-    if(emailRegex.hasMatch(email)){
+    if (emailRegex.hasMatch(email)) {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
@@ -30,90 +29,104 @@ class SignUpStep1 extends StatelessWidget {
       } catch (e) {
         print(e);
       }
-    }else{
-      print("enter a valid email format");
+    } else {
+      print("Enter a valid email format");
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.grey,
+        foregroundColor: Colors.black,
+        elevation: 1,
         title: const Text("Sign Up"),
       ),
-      body: Center(  // Centering the content on the screen
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),  // Same padding as LoginPage
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,  // Centering children vertically
-              crossAxisAlignment: CrossAxisAlignment.center, // Ensuring all children align to the center
-              children: [
-                // TextField for Email (Centered and styled like in LoginPage)
-                TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    labelText: 'E-Mail', // Matching LoginPage label
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("lib/assets/deneme_resim.jpeg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(15),
+              ),
 
-                // TextField for Password (Centered and styled like in LoginPage)
-                TextField(
-                  controller:passwordController,
-                  decoration: InputDecoration(
-                    labelText: 'Password', // Matching LoginPage label
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                  obscureText: true,  // Secure password input like in LoginPage
-                ),
-                const SizedBox(height: 20),
+              child: Column(
 
-                // TextField for Confirm Password (Centered and styled like in LoginPage)
-                TextField(
-                  controller: confirmPasswordController,
-                  decoration: InputDecoration(
-                    labelText: 'Confirm Password', // New field for confirmation
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                  obscureText: true,  // Secure password input
-                ),
-                const SizedBox(height: 20),
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
 
-                // "Next" Button (Centered and styled like in LoginPage)
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      signUp();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUpStep2(),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
+                children: [
+                  TextField(
+                    controller: emailController,
+
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.account_box),
+                      labelText: 'E-Mail',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(41),
+
                       ),
                     ),
-                    child: const Text('Next', style: TextStyle(fontSize: 18)),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 30),
+                  TextField(
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.password),
+                      labelText: 'Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(41),
+                      ),
+                    ),
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 30),
+                  TextField(
+                    controller: confirmPasswordController,
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.password),
+                      labelText: 'Confirm Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(41),
+                      ),
+                    ),
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 30),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        signUp();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUpStep2(),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: const Text('Next', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 23)),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
