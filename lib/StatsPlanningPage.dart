@@ -18,7 +18,22 @@ class StatsPlanning extends StatelessWidget {
     required this.fitnessLevel,
   });
 
-
+  Future<String> getStats(String stat) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+        return userDoc[stat]?.toString() ?? "N/A"; // Return stat value or "N/A" if missing
+      } else {
+        print("No user is signed in");
+        return "N/A";
+      }
+    } catch (e) {
+      print("Error fetching stat: $e");
+      return "Error";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,26 +67,29 @@ class StatsPlanning extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   MyStatsTextBox(
                     buttonName: "Body Mass Index",
                     icon: Icons.monitor_heart,
-                    gradientColors: [Colors.teal, Colors.greenAccent],
+                    gradientColors: const [Colors.teal, Colors.greenAccent],
                     statKey: "bmi",
+                    getStats: getStats,
                   ),
                   MyStatsTextBox(
                     buttonName: "Body Fat Percentage",
                     icon: Icons.water_drop,
-                    gradientColors: [Colors.pinkAccent, Colors.redAccent],
+                    gradientColors: const [Colors.pinkAccent, Colors.redAccent],
                     statKey: "bfp",
+                    getStats: getStats,
                   ),
                   MyStatsTextBox(
                     buttonName: "Daily Calorie Intake",
                     icon: Icons.local_fire_department,
-                    gradientColors: [Colors.orange, Colors.deepOrange],
+                    gradientColors: const [Colors.orange, Colors.deepOrange],
                     statKey: "daily_calories",
+                    getStats: getStats,
                   ),
                 ],
               ),
@@ -118,16 +136,22 @@ class StatsPlanning extends StatelessWidget {
               GradientButton(
                 title: "Daily Diet",
                 icon: Icons.fastfood_outlined,
-                gradientColors: [Colors.black87,Colors.red,],
-                onTap: () {
+                gradientColors: [Colors.black87, Colors.red],
+                onTap: () async {
+                  String daily_calories = await getStats("daily_calories");
+                  print(daily_calories);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DailyDietPage(goal: goal, bmi: 0,dailyCalories: 0,),
+                      builder: (context) => DailyDietPage(
+                        goal: goal,
+                        dailyCalories: double.tryParse(daily_calories) ?? 0.0,
+                      ),
                     ),
                   );
                 },
               ),
+
               const SizedBox(height: 50),
             ],
           ),
@@ -142,6 +166,7 @@ class MyStatsTextBox extends StatelessWidget {
   final IconData icon;
   final List<Color> gradientColors;
   final String statKey;
+  final Function getStats;
 
   const MyStatsTextBox({
     super.key,
@@ -149,24 +174,10 @@ class MyStatsTextBox extends StatelessWidget {
     required this.icon,
     required this.gradientColors,
     required this.statKey,
+    required this.getStats
   });
 
-  Future<String> getStats(String stat) async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        DocumentSnapshot userDoc =
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-        return userDoc[stat]?.toString() ?? "N/A"; // Return stat value or "N/A" if missing
-      } else {
-        print("No user is signed in");
-        return "N/A";
-      }
-    } catch (e) {
-      print("Error fetching stat: $e");
-      return "Error";
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
