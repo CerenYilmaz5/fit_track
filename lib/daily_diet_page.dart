@@ -1,3 +1,5 @@
+
+import 'package:fit_track/recipe_recommendation.dart';
 import 'package:flutter/material.dart';
 
 
@@ -224,6 +226,16 @@ class _DailyDietPageState extends State<DailyDietPage> {
               onPressed: showAddFoodDialog,
               child: const Text("Add New Food"),
             ),
+            ElevatedButton(
+              // Within the `FirstRoute` widget:
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RecipeRecommendation(minCalories: (widget.dailyCalories/7).toInt())),
+                );
+              },
+              child: const Text("Look for Recipes"),
+            ),
             const SizedBox(height: 20),
             const Text(
               "Added Foods",
@@ -298,3 +310,5 @@ class _DailyDietPageState extends State<DailyDietPage> {
     );
   }
 }
+
+
