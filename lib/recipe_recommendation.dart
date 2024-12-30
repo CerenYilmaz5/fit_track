@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class RecipeFinder{
 
@@ -48,14 +47,7 @@ class _RecipeRecommendationState extends State<RecipeRecommendation> {
     _recipes = RecipeFinder().fetchRecipes(widget.minCalories);
   }
 
-  Future<void> _launchUrl(String url) async {
-    print(url);
-    try{
-      await launchUrl(Uri.parse(url),mode: LaunchMode.externalApplication);
-    }catch(e){
-      print(e);
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +92,7 @@ class _RecipeRecommendationState extends State<RecipeRecommendation> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextButton(
-                          onPressed: () => _launchUrl(recipe['sourceUrl']),
+                          onPressed: () => (),
                           child: Text(
                             "View Full Recipe",
                             style: TextStyle(
