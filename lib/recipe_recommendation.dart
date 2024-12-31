@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-class RecipeFinder{
 
+class RecipeFinder {
   final String base_url = "https://api.spoonacular.com/recipes/complexSearch";
   final String api_key = "8ae76b027c564cf281173463ce365ad2";
 
@@ -17,7 +16,7 @@ class RecipeFinder{
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print(data["results"]);
-        return data['results']; // Returns a list of recipes
+        return data['results'];
       } else {
         throw Exception("Failed to fetch recipes. Status code: ${response.statusCode}");
       }
@@ -27,13 +26,10 @@ class RecipeFinder{
   }
 }
 
-
-
-
 class RecipeRecommendation extends StatefulWidget {
   final int minCalories;
 
-  const RecipeRecommendation({super.key,required this.minCalories});
+  const RecipeRecommendation({super.key, required this.minCalories});
 
   @override
   createState() => _RecipeRecommendationState();
@@ -48,14 +44,6 @@ class _RecipeRecommendationState extends State<RecipeRecommendation> {
     _recipes = RecipeFinder().fetchRecipes(widget.minCalories);
   }
 
-  Future<void> _launchUrl(String url) async {
-    print(url);
-    try{
-      await launchUrl(Uri.parse(url),mode: LaunchMode.externalApplication);
-    }catch(e){
-      print(e);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +70,7 @@ class _RecipeRecommendationState extends State<RecipeRecommendation> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (recipe['image'] != null)
-                        Image.network(recipe['image']), // Display the image
+                        Image.network(recipe['image']),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
@@ -95,12 +83,12 @@ class _RecipeRecommendationState extends State<RecipeRecommendation> {
                         child: Text(
                           "Calories: ${recipe['nutrition']['nutrients'][0]['amount']}",
                           style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
-                        )
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextButton(
-                          onPressed: () => _launchUrl(recipe['sourceUrl']),
+                          onPressed: () => null,
                           child: Text(
                             "View Full Recipe",
                             style: TextStyle(
@@ -121,5 +109,3 @@ class _RecipeRecommendationState extends State<RecipeRecommendation> {
     );
   }
 }
-
-

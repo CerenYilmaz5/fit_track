@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fit_track/EventPage.dart';
 import 'package:fit_track/daily_diet_page.dart';
 import 'package:fit_track/workout_page.dart';
 import 'package:flutter/material.dart';
+
 
 class StatsPlanning extends StatelessWidget {
   final String goal;
@@ -88,6 +91,7 @@ class StatsPlanning extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>EventsPage(
+
                       ),
 
                     ),
