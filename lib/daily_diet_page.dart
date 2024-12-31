@@ -1,7 +1,8 @@
-
-import 'package:fit_track/recipe_recommendation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'package:fit_track/recipe_recommendation.dart';
 
 class DailyDietPage extends StatefulWidget {
   final String goal;
@@ -18,34 +19,53 @@ class DailyDietPage extends StatefulWidget {
 }
 
 class _DailyDietPageState extends State<DailyDietPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  late String userId;
+
+  double consumedCalories = 0.0;
+  double carbsConsumed = 0.0;
+  double carbsGoal = 0.0;
+  double proteinConsumed = 0.0;
+  double proteinGoal = 0.0;
+  double fatConsumed = 0.0;
+  double fatGoal = 0.0;
+  List<Map<String, dynamic>> foodItems = [];
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    userId = _auth.currentUser!.uid;
     calculateMacronutrients(widget.goal, widget.dailyCalories);
+    _loadUserData();
   }
 
+  Future<void> _loadUserData() async {
+    DocumentSnapshot userDoc = await _firestore.collection('users').doc(userId).get();
 
-  double consumedCalories = 0.0;
+    if (userDoc.exists) {
+      setState(() {
+        consumedCalories = userDoc['consumedCalories'] ?? 0.0;
+        proteinConsumed = userDoc['proteinConsumed'] ?? 0.0;
+        carbsConsumed = userDoc['carbsConsumed'] ?? 0.0;
+        fatConsumed = userDoc['fatConsumed'] ?? 0.0;
+        foodItems = List<Map<String, dynamic>>.from(userDoc['foodItems'] ?? []);
+      });
+    }
+  }
 
-  double carbsConsumed = 0.0;
-  double carbsGoal = 0.0;
+  Future<void> _updateUserData() async {
+    await _firestore.collection('users').doc(userId).set({
+      'consumedCalories': consumedCalories,
+      'proteinConsumed': proteinConsumed,
+      'carbsConsumed': carbsConsumed,
+      'fatConsumed': fatConsumed,
+      'foodItems': foodItems,
+    }, SetOptions(merge: true));
+  }
 
-  double proteinConsumed = 0.0;
-  double proteinGoal = 0.0;
-
-  double fatConsumed = 0.0;
-  double fatGoal = 0.0;
-
-
-
-  List<Map<String, dynamic>> foodItems = [];
-
-
-
-
-  void calculateMacronutrients(String goal, double daily_calories) {
+  void calculateMacronutrients(String goal, double dailyCalories) {
     double proteinPercentage = 0.0;
     double carbsPercentage = 0.0;
     double fatPercentage = 0.0;
@@ -71,13 +91,10 @@ class _DailyDietPageState extends State<DailyDietPage> {
         carbsPercentage = 0.50;
         fatPercentage = 0.30;
     }
-    proteinGoal = daily_calories * proteinPercentage / 4;
-    carbsGoal = daily_calories * carbsPercentage / 4;
-    fatGoal = daily_calories * fatPercentage / 9;
-
+    proteinGoal = dailyCalories * proteinPercentage / 4;
+    carbsGoal = dailyCalories * carbsPercentage / 4;
+    fatGoal = dailyCalories * fatPercentage / 9;
   }
-
-
 
   void addFood(String foodName, double calories, double protein, double carbs, double fats) {
     setState(() {
@@ -87,6 +104,7 @@ class _DailyDietPageState extends State<DailyDietPage> {
       fatConsumed += fats;
       foodItems.add({'name': foodName, 'calories': calories, 'protein': protein, 'carbs': carbs, 'fats': fats});
     });
+    _updateUserData();
   }
 
   void removeFood(int index) {
@@ -98,8 +116,8 @@ class _DailyDietPageState extends State<DailyDietPage> {
       fatConsumed -= foodItem['fats'];
       foodItems.removeAt(index);
     });
+    _updateUserData();
   }
-
 
   void showAddFoodDialog() {
     TextEditingController foodController = TextEditingController();
@@ -173,94 +191,113 @@ class _DailyDietPageState extends State<DailyDietPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Daily Diet"),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.blueGrey,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            const Text(
-              "Daily Diet Tracking",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            _buildProgressCard(
-              title: "Calories",
-              consumed: consumedCalories,
-              goal: widget.dailyCalories,
-              color: Colors.red,
-              unit: "kcal",
-            ),
-            const SizedBox(height: 10),
-            _buildProgressCard(
-              title: "Carbohydrates",
-              consumed: carbsConsumed,
-              goal: carbsGoal,
-              color: Colors.orange,
-              unit: "g",
-            ),
-            const SizedBox(height: 10),
-            _buildProgressCard(
-              title: "Protein",
-              consumed: proteinConsumed,
-              goal: proteinGoal,
-              color: Colors.blue,
-              unit: "g",
-            ),
-            const SizedBox(height: 10),
-            _buildProgressCard(
-              title: "Fats",
-              consumed: fatConsumed,
-              goal: fatGoal,
-              color: Colors.green,
-              unit: "g",
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: showAddFoodDialog,
-              child: const Text("Add New Food"),
-            ),
-            ElevatedButton(
-              // Within the `FirstRoute` widget:
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.black38, Colors.white, Colors.black54],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              const Text(
+                "Daily Diet Tracking",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              _buildProgressCard(
+                title: "Calories",
+                consumed: consumedCalories,
+                goal: widget.dailyCalories,
+                color: Colors.red,
+                unit: "kcal",
+              ),
+              const SizedBox(height: 10),
+              _buildProgressCard(
+                title: "Carbohydrates",
+                consumed: carbsConsumed,
+                goal: carbsGoal,
+                color: Colors.orange,
+                unit: "g",
+              ),
+              const SizedBox(height: 10),
+              _buildProgressCard(
+                title: "Protein",
+                consumed: proteinConsumed,
+                goal: proteinGoal,
+                color: Colors.blue,
+                unit: "g",
+              ),
+              const SizedBox(height: 10),
+              _buildProgressCard(
+                title: "Fats",
+                consumed: fatConsumed,
+                goal: fatGoal,
+                color: Colors.green,
+                unit: "g",
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: showAddFoodDialog,
+                child: const Text("Add New Food"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white70,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+              ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => RecipeRecommendation(minCalories: (widget.dailyCalories/7).toInt())),
+                    MaterialPageRoute(builder: (context) => RecipeRecommendation(minCalories: (widget.dailyCalories / 7).toInt())),
                   );
                 },
-              child: const Text("Look for Recipes"),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              "Added Foods",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: foodItems.length,
-              itemBuilder: (context, index) {
-                final item = foodItems[index];
-                return ListTile(
-                  title: Text(item['name']),
-                  subtitle: Text("Calories: ${item['calories']} kcal"),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      removeFood(index);
-                    },
+                child: const Text("Look for Recipes"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white70,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                );
-              },
-            ),
-          ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                "Added Foods",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: foodItems.length,
+                itemBuilder: (context, index) {
+                  final item = foodItems[index];
+                  return ListTile(
+                    title: Text(item['name']),
+                    subtitle: Text("Calories: ${item['calories']} kcal"),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        removeFood(index);
+                      },
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -275,6 +312,7 @@ class _DailyDietPageState extends State<DailyDietPage> {
   }) {
     return Card(
       elevation: 3,
+      color: Colors.white70,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -310,5 +348,3 @@ class _DailyDietPageState extends State<DailyDietPage> {
     );
   }
 }
-
-
