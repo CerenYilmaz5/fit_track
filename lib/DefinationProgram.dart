@@ -184,14 +184,14 @@ class DefinitionProgram {
     {
       return [
         [
-          {"name": "Barbell Bench Press 4x10", "details": "Lie on a bench, grip the barbell slightly wider than shoulder-width, and press it upwards. Perform 4 sets of 10 reps.", "gif": ""},
-          {"name": "Incline Dumbbell Press 3x10", "details": "Set the bench to an incline and press the dumbbells upward for 3 sets of 10 reps.", "gif": ""},
-          {"name": "Barbell Row 4x8-10", "details": "Hinge at your hips and pull the barbell towards your waist for 4 sets of 8-10 reps.", "gif": ""},
-          {"name": "Barbell Squat 4x12", "details": "Position the barbell across your shoulders, squat down, and return to standing. Perform 4 sets of 12 reps.", "gif": ""},
-          {"name": "Romanian Deadlift 3x10", "details": "Hinge at your hips while holding a barbell to target hamstrings and glutes. Perform 3 sets of 10 reps.", "gif": ""},
+          {"name": "Barbell Bench Press 4x10", "details": "Lie on a bench, grip the barbell slightly wider than shoulder-width, and press it upwards. Perform 4 sets of 10 reps.", "gif": "lib/assets/male-barbell-bench-press-front.gif"},
+          {"name": "Incline Dumbbell Press 3x10", "details": "Set the bench to an incline and press the dumbbells upward for 3 sets of 10 reps.", "gif": "lib/assets/male-barbell-bench-press-front.gif"},
+          {"name": "Barbell Row 4x8-10", "details": "Hinge at your hips and pull the barbell towards your waist for 4 sets of 8-10 reps.", "gif": "lib/assets/barbellrow-1457038583.gif"},
+          {"name": "Barbell Squat 4x12", "details": "Position the barbell across your shoulders, squat down, and return to standing. Perform 4 sets of 12 reps.", "gif": "lib/assets/squat.jpg"},
+          {"name": "Romanian Deadlift 3x10", "details": "Hinge at your hips while holding a barbell to target hamstrings and glutes. Perform 3 sets of 10 reps.", "gif": "lib/assets/romdeadlift.jpg"},
         ],
         [
-          {"name": "Deadlift 4x6", "details": "Stand with feet shoulder-width apart, grip the barbell, and lift it by extending your hips and knees. Perform 4 sets of 6 reps.", "gif": ""},
+          {"name": "Deadlift 4x6", "details": "Stand with feet shoulder-width apart, grip the barbell, and lift it by extending your hips and knees. Perform 4 sets of 6 reps.", "gif": "lib/assets/deadlift.gif"},
           {"name": "Pull-Ups 4x10", "details": "Grip a pull-up bar and lift your body until your chin clears the bar. Perform 4 sets of 10 reps.", "gif": ""},
           {"name": "Barbell Overhead Press 3x8", "details": "Press a barbell overhead to target your shoulders. Perform 3 sets of 8 reps.", "gif": ""},
           {"name": "Walking Lunges 3x10 per leg", "details": "Hold dumbbells and perform lunges while walking forward. Perform 3 sets of 10 reps per leg.", "gif": ""},

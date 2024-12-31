@@ -65,6 +65,11 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   # assets:
   assets:
+    - lib/assets/deadlift.gif
+    - lib/assets/romdeadlift.jpg
+    - lib/assets/squat.jpg
+    - lib/assets/barbellrow-1457038583.gif
+    - lib/assets/male-barbell-bench-press-front.gif
     - lib/assets/logo.jpg
     - lib/assets/signup_bckground.jpeg
     - lib/assets/deneme_resim.jpeg
