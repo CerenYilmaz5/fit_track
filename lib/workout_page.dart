@@ -1,4 +1,5 @@
 import 'package:fit_track/DefinationProgram.dart';
+import 'package:fit_track/StatsPlanningPage.dart';
 import 'package:flutter/material.dart';
 import 'package:fit_track/BulkProgram.dart';
 import 'package:fit_track/WeightLoss.dart';
@@ -35,62 +36,75 @@ class WorkoutPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Workout Planning"),
-        backgroundColor: Colors.blue[700],
+        backgroundColor: Colors.blueGrey,
       ),
 
-      body: SafeArea(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.white38, Colors.grey, Colors.blueGrey],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: SafeArea(
 
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
 
-          children: [
-            const SizedBox(height: 20),
-            Center(
-              child: Text(
-                "Goal: $goal",
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blueAccent,
+            children: [
+              const SizedBox(height: 20),
+              Center(
+                child: Text(
+                  "Goal: $goal",
+                  style: const TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.blueAccent,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
-            ),
 
-            const SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 
-            Expanded(
-              child: ListView.builder(
-                itemCount: days,
-                itemBuilder: (context, index) {
-                  return DayButton(
-                    day: index + 1,
-                    program: program,
-                  );
-                },
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-              //Button adding
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue[600],
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: days,
+                  itemBuilder: (context, index) {
+                    return DayButton(
+                      day: index + 1,
+                      program: program,
+                    );
+                  },
                 ),
-
-                label: const Text("Back"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.arrow_back),
               ),
-            ),
-            ],
-         ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+                //Button adding
+                child: SizedBox(
+                  width: 200,
+                  height: 70,
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue[600],
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
+                    label: const Text("Back",style: TextStyle(fontSize: 25),),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                  ),
+                ),
+              ),
+              ],
+           ),
+        ),
       ),
 
     );
@@ -116,25 +130,17 @@ class DayButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
 
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue[700],
-          foregroundColor: Colors.white,
-
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          ),
-
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => WorkoutDayPage(day: day, exercises: exercises),
-          ),
-         ),
-        child: Text(
-          "Day $day",
-          style: const TextStyle(fontSize: 18),
+      child: SizedBox(
+        height: 80,
+        child: GradientButton(
+          gradientColors: [Colors.black12, Colors.redAccent],
+          icon: Icons.fitness_center,
+          title: "Day $day",
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => WorkoutDayPage(day: day, exercises: exercises),
+            ),
+           ),
         ),
       ),
      );
@@ -158,47 +164,56 @@ class WorkoutDayPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Day $day Workout Plan"),
 
-        backgroundColor: Colors.blue[700],
+        backgroundColor: Colors.blueGrey,
       ),
-      body: ListView.builder(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.white38, Colors.grey, Colors.blueGrey],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: ListView.builder(
 
-        itemCount: exercises.length,
-        itemBuilder: (context, index) {
+          itemCount: exercises.length,
+          itemBuilder: (context, index) {
 
-          return ListTile(
-            leading: const Icon(Icons.fitness_center, color: Colors.blueAccent),
-            title: Text(
-              exercises[index]['name']!,
+            return ListTile(
+              leading: const Icon(Icons.fitness_center, color: Colors.blueAccent),
+              title: Text(
+                exercises[index]['name']!,
 
-              style: TextStyle(fontSize: 16, color: Colors.blue[900]),
-            ),
-
-
-            trailing: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue[600],
-                foregroundColor: Colors.white,
-
+                style: TextStyle(fontSize: 16, color: Colors.blue[900]),
               ),
 
-              onPressed: () {
-                Navigator.of(context).push(
 
-                  MaterialPageRoute(
-                    builder: (context) => ExerciseDetailsPage(
+              trailing: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue[600],
+                  foregroundColor: Colors.white,
 
-                      exerciseName: exercises[index]['name']!,
-                      exerciseDetails: exercises[index]['details']!,
-                      exerciseGif: exercises[index]['gif'],
+                ),
 
+                onPressed: () {
+                  Navigator.of(context).push(
+
+                    MaterialPageRoute(
+                      builder: (context) => ExerciseDetailsPage(
+
+                        exerciseName: exercises[index]['name']!,
+                        exerciseDetails: exercises[index]['details']!,
+                        exerciseGif: exercises[index]['gif'],
+
+                      ),
                     ),
-                  ),
-                 );
-              },
-              child: const Text("Details"),
-            ),
-          );
-        },
+                   );
+                },
+                child: const Text("Details"),
+              ),
+            );
+          },
+        ),
       ),
 
     );
@@ -224,34 +239,44 @@ class ExerciseDetailsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("$exerciseName Details"),
 
-        backgroundColor: Colors.blue[700],
+        backgroundColor: Colors.blueGrey,
       ),
 
-      body: Padding(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.white38, Colors.grey, Colors.blueGrey],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
 
-        padding: const EdgeInsets.all(16.0),
-        child:Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Padding(
 
-          children: [
-            if (exerciseGif != null)
-              Center(
-                child: Image.asset(
-                  exerciseGif!,
-                  height: 250,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+          padding: const EdgeInsets.all(16.0),
+          child:Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+
+            children: [
+              if (exerciseGif != null)
+                Center(
+                  child: Image.asset(
+                    exerciseGif!,
+                    height: 250,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-            const SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-            Text(
-          exerciseDetails,
-          style: TextStyle(fontSize: 18, color: Colors.blue[900]),
-        ),
-        ],
-        ),
-        ),
+              Text(
+            exerciseDetails,
+            style: TextStyle(fontSize: 18, color: Colors.blue[900]),
+          ),
+          ],
+          ),
+          ),
+      ),
     );
 
   }
