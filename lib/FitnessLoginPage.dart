@@ -122,7 +122,7 @@ class FitnessLoginPage extends StatelessWidget {
                   child: GradientButton(
                     title: "Log In",
                     icon: Icons.login,
-                    gradientColors: [Colors.black26,Colors.black54],
+                    gradientColors: [Colors.red,Colors.black54,Colors.red],
                     onTap: () {
                       String email = emailController.text.trim();
                       String password = passwordController.text.trim();

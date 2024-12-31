@@ -218,33 +218,36 @@ class SignUpStep3 extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 30),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (selectedGoal.value != null &&
-                            availableDays.value != null) {
-                          addUserDetails();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => StatsPlanning(
-                                goal: selectedGoal.value!,
-                                days: availableDays.value!,
-                                fitnessLevel: signUpStep2.fitnessLevel.value!,
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (selectedGoal.value != null &&
+                              availableDays.value != null) {
+                            addUserDetails();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => StatsPlanning(
+                                  goal: selectedGoal.value!,
+                                  days: availableDays.value!,
+                                  fitnessLevel: signUpStep2.fitnessLevel.value!,
+                                ),
                               ),
-                            ),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
                         ),
-                      ),
-                      child: const Text(
-                        "Next",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
+                        child: const Text(
+                          "Next",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                       ),
                     ),
                   ],

@@ -124,44 +124,47 @@ class SignUpStep2 extends StatelessWidget {
                   const SizedBox(height: 20),
                   UserTextField(text: 'Hip Circumference (cm)', controller: hipCircumferenceController),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (fitnessLevel.value != null) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignUpStep3(
-                              signUpStep2: this,
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (fitnessLevel.value != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpStep3(
+                                signUpStep2: this,
+                              ),
                             ),
-                          ),
-                        );
-                      } else {
+                          );
+                        } else {
 
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Error'),
-                              content: const Text('Please select your fitness level.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Error'),
+                                content: const Text('Please select your fitness level.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                       ),
+                      child: const Text('Next', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 23)),
                     ),
-                    child: const Text('Next', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 23)),
                   ),
                 ],
               ),
