@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fit_track/SignUpStep2.dart';
-import 'package:fit_track/StatsPlanningPage.dart';
+import 'package:fit_track/Pages/SignUpStep2.dart';
+import 'package:fit_track/Pages/StatsPlanningPage.dart';
 import 'package:flutter/material.dart';
 
 class SignUpStep3 extends StatelessWidget {
@@ -228,11 +228,7 @@ class SignUpStep3 extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => StatsPlanning(
-                                  goal: selectedGoal.value!,
-                                  days: availableDays.value!,
-                                  fitnessLevel: signUpStep2.fitnessLevel.value!,
-                                ),
+                                builder: (context) => StatsPlanning(),
                               ),
                             );
                           }

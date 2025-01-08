@@ -5,9 +5,9 @@ import 'SignUpStep2.dart';
 class SignUpStep1 extends StatelessWidget {
   SignUpStep1({super.key});
 
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
-  var confirmPasswordController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
   Future<void> signUp() async {
     String email = emailController.text.trim();

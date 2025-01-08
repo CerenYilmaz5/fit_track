@@ -6,12 +6,12 @@ class SignUpStep2 extends StatelessWidget {
 
   final ValueNotifier<String?> fitnessLevel = ValueNotifier<String?>(null);
   final ValueNotifier<String?> gender = ValueNotifier<String?>(null);
-  var ageController = TextEditingController();
-  var weightController = TextEditingController();
-  var heightController = TextEditingController();
-  var neckCircumferenceController = TextEditingController();
-  var waistCircumferenceController = TextEditingController();
-  var hipCircumferenceController = TextEditingController();
+  final ageController = TextEditingController();
+  final weightController = TextEditingController();
+  final heightController = TextEditingController();
+  final neckCircumferenceController = TextEditingController();
+  final waistCircumferenceController = TextEditingController();
+  final hipCircumferenceController = TextEditingController();
 
 
 

@@ -1,4 +1,4 @@
-import 'package:fit_track/StatsPlanningPage.dart';
+import 'package:fit_track/Pages/StatsPlanningPage.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasswordPage extends StatelessWidget {

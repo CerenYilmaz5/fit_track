@@ -1,21 +1,46 @@
-import 'package:fit_track/DefinationProgram.dart';
-import 'package:fit_track/StatsPlanningPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fit_track/Workout_Programs/DefinationProgram.dart';
+import 'package:fit_track/Pages/StatsPlanningPage.dart';
 import 'package:flutter/material.dart';
-import 'package:fit_track/BulkProgram.dart';
-import 'package:fit_track/WeightLoss.dart';
+import 'package:fit_track/Workout_Programs/BulkProgram.dart';
+import 'package:fit_track/Workout_Programs/WeightLoss.dart';
 
-class WorkoutPage extends StatelessWidget {
-  final String goal;
-  final int days;
-  final String fitnessLevel;
-
+class WorkoutPage extends StatefulWidget {
 
   const WorkoutPage({
     super.key,
-    required this.goal,
-    required this.days,
-    required this.fitnessLevel,
   });
+
+  @override
+  State<WorkoutPage> createState() => _WorkoutPageState();
+}
+
+class _WorkoutPageState extends State<WorkoutPage> {
+
+  late String goal ="";
+  late int days = 0;
+  late String fitnessLevel = "";
+
+
+  Future<void> _loadUserData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user?.uid).get();
+
+    if (userDoc.exists) {
+      setState(() {
+          goal = userDoc['goal'];
+          days = userDoc['available_days'];
+          fitnessLevel = userDoc['fitness_level'];
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
   // Definiton is open now. But whole programme should editted. Lose weight and BLuking as well.
   @override
   Widget build(BuildContext context) {
@@ -35,10 +60,11 @@ class WorkoutPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Workout Planning"),
-        backgroundColor: Colors.blueGrey,
+        title: const Text("Workout Planning", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white,)),
+        centerTitle: true,
+        backgroundColor: Colors.redAccent,
       ),
-
+      bottomNavigationBar: bottom_nav_bar(current_index: 3),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -56,7 +82,7 @@ class WorkoutPage extends StatelessWidget {
               const SizedBox(height: 20),
               Center(
                 child: Text(
-                  "Goal: $goal",
+                  "Goal: ${goal}",
                   style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -162,9 +188,8 @@ class WorkoutDayPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Day $day Workout Plan"),
-
-        backgroundColor: Colors.blueGrey,
+        title: Text("Day $day Workout Plan",style: TextStyle(color: Colors.white),),
+        backgroundColor: Colors.redAccent,
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -192,7 +217,7 @@ class WorkoutDayPage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue[600],
                   foregroundColor: Colors.white,
-
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
                 ),
 
                 onPressed: () {
@@ -237,9 +262,9 @@ class ExerciseDetailsPage extends StatelessWidget {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text("$exerciseName Details"),
+        title: Text("$exerciseName Details",style: TextStyle(color: Colors.white),),
 
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Colors.redAccent,
       ),
 
       body: Container(

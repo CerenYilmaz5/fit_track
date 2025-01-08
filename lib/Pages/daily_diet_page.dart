@@ -2,16 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:fit_track/recipe_recommendation.dart';
+import 'package:fit_track/Pages/recipe_recommendation.dart';
+
+import 'StatsPlanningPage.dart';
 
 class DailyDietPage extends StatefulWidget {
-  final String goal;
-  final double dailyCalories;
+
 
   const DailyDietPage({
     super.key,
-    required this.goal,
-    required this.dailyCalories,
   });
 
   @override
@@ -19,9 +18,11 @@ class DailyDietPage extends StatefulWidget {
 }
 
 class _DailyDietPageState extends State<DailyDietPage> {
+
+  String goal = "";
+  double dailyCalories = 0;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   late String userId;
 
   double consumedCalories = 0.0;
@@ -35,10 +36,11 @@ class _DailyDietPageState extends State<DailyDietPage> {
 
   @override
   void initState() {
+    print("hey");
     super.initState();
     userId = _auth.currentUser!.uid;
-    calculateMacronutrients(widget.goal, widget.dailyCalories);
     _loadUserData();
+    calculateMacronutrients(goal, dailyCalories.toDouble());
   }
 
   Future<void> _loadUserData() async {
@@ -47,11 +49,15 @@ class _DailyDietPageState extends State<DailyDietPage> {
     if (userDoc.exists) {
       setState(() {
         consumedCalories = userDoc['consumedCalories'] ?? 0.0;
-        proteinConsumed = userDoc['proteinConsumed'] ?? 0.0;
+        proteinConsumed = userDoc['proteinConsumed']?? 0.0;
         carbsConsumed = userDoc['carbsConsumed'] ?? 0.0;
         fatConsumed = userDoc['fatConsumed'] ?? 0.0;
         foodItems = List<Map<String, dynamic>>.from(userDoc['foodItems'] ?? []);
+        goal = userDoc['goal'] ?? "";
+        dailyCalories = userDoc['daily_calories'].toDouble() ?? 0.0;
       });
+      calculateMacronutrients(goal, dailyCalories);
+
     }
   }
 
@@ -193,16 +199,15 @@ class _DailyDietPageState extends State<DailyDietPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Daily Diet"),
-        backgroundColor: Colors.blueGrey,
+        title: const Text("Daily Diet", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white,)),
+        centerTitle: true,
+        backgroundColor: Colors.redAccent,
       ),
+      bottomNavigationBar: bottom_nav_bar(current_index: 2),
+
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.black38, Colors.white, Colors.black54],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          color: Colors.black54,
         ),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -212,13 +217,13 @@ class _DailyDietPageState extends State<DailyDietPage> {
               const SizedBox(height: 20),
               const Text(
                 "Daily Diet Tracking",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white),
               ),
               const SizedBox(height: 20),
               _buildProgressCard(
                 title: "Calories",
                 consumed: consumedCalories,
-                goal: widget.dailyCalories,
+                goal: dailyCalories,
                 color: Colors.red,
                 unit: "kcal",
               ),
@@ -249,9 +254,9 @@ class _DailyDietPageState extends State<DailyDietPage> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: showAddFoodDialog,
-                child: const Text("Add New Food"),
+                child: const Text("Add New Food",style: TextStyle(color: Colors.white)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white70,
+                  backgroundColor: Colors.redAccent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -261,12 +266,12 @@ class _DailyDietPageState extends State<DailyDietPage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => RecipeRecommendation(minCalories: (widget.dailyCalories / 7).toInt())),
+                    MaterialPageRoute(builder: (context) => RecipeRecommendation(minCalories: (dailyCalories.toDouble() / 7).toInt())),
                   );
                 },
-                child: const Text("Look for Recipes"),
+                child: const Text("Look for Recipes",style: TextStyle(color: Colors.white)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white70,
+                  backgroundColor: Colors.redAccent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -275,7 +280,7 @@ class _DailyDietPageState extends State<DailyDietPage> {
               const SizedBox(height: 20),
               const Text(
                 "Added Foods",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
               ),
               const SizedBox(height: 10),
               ListView.builder(
@@ -285,10 +290,10 @@ class _DailyDietPageState extends State<DailyDietPage> {
                 itemBuilder: (context, index) {
                   final item = foodItems[index];
                   return ListTile(
-                    title: Text(item['name']),
-                    subtitle: Text("Calories: ${item['calories']} kcal"),
+                    title: Text(item['name'],style: TextStyle(color: Colors.white70),),
+                    subtitle: Text("Calories: ${item['calories']} kcal",style: TextStyle(color: Colors.white70),),
                     trailing: IconButton(
-                      icon: const Icon(Icons.delete),
+                      icon: const Icon(Icons.delete,color: Colors.white60,),
                       onPressed: () {
                         removeFood(index);
                       },
@@ -312,7 +317,7 @@ class _DailyDietPageState extends State<DailyDietPage> {
   }) {
     return Card(
       elevation: 3,
-      color: Colors.white70,
+      color: Colors.redAccent,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -320,7 +325,7 @@ class _DailyDietPageState extends State<DailyDietPage> {
           children: [
             Text(
               title,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),
             ),
             const SizedBox(height: 10),
             LinearProgressIndicator(
@@ -334,11 +339,11 @@ class _DailyDietPageState extends State<DailyDietPage> {
               children: [
                 Text(
                   "${consumed.toStringAsFixed(1)} $unit",
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16,color: Colors.white),
                 ),
                 Text(
                   "${goal.toStringAsFixed(1)} $unit",
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),
                 ),
               ],
             ),

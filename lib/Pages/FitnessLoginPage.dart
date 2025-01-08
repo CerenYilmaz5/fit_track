@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fit_track/StatsPlanningPage.dart';
+import 'package:fit_track/Pages/EventPage.dart';
+import 'package:fit_track/Pages/StatsPlanningPage.dart';
 import 'package:flutter/material.dart';
 import 'ForgotPasswordPage.dart';
 import 'SignUpStep1.dart';
@@ -8,41 +8,28 @@ import 'SignUpStep1.dart';
 class FitnessLoginPage extends StatelessWidget {
   final String title;
 
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   FitnessLoginPage({super.key, required this.title});
 
   Future<void> login(BuildContext context, String email, String password) async {
     try {
       // Sign in the user
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      if (userCredential.user != null) {
-        // Get the currently signed-in user
-        User? user = FirebaseAuth.instance.currentUser;
-
-        if (user != null) {
-          // Fetch the user's goal from Firestore
-          DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
           // Navigate to StatsPlanning
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => StatsPlanning(
-                goal: userDoc['goal'],
-                days: userDoc['available_days'], // Pass available days
-                fitnessLevel: userDoc['fitness_level'], // Pass fitness level
-              ),
-            ),
-          );
-          print("User signed in and navigated to StatsPlanning");
-        }
-      } else {
-        print("No user is signed in");
-      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EventsPage(),
+        ),
+      );
+      print("User signed in and navigated to StatsPlanning");
+
+
     } catch (e) {
       print("Error logging in: $e");
     }
