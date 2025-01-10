@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'SignUpStep2.dart';
@@ -8,9 +9,16 @@ class SignUpStep1 extends StatelessWidget {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final surNameController = TextEditingController();
+  final userNameController = TextEditingController();
 
   Future<void> signUp() async {
     String email = emailController.text.trim();
+    String firstName = firstNameController.text.trim();
+    String surName = surNameController.text.trim();
+    String userName = userNameController.text.trim();
+
     final RegExp emailRegex = RegExp(
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
     );
@@ -19,7 +27,9 @@ class SignUpStep1 extends StatelessWidget {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: passwordController.text.trim(),
+
         );
+
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           print('The password provided is too weak.');
@@ -72,6 +82,45 @@ class SignUpStep1 extends StatelessWidget {
                     decoration: InputDecoration(
                       icon: Icon(Icons.account_box),
                       labelText: 'E-Mail',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(41),
+
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  TextField(
+                    controller: firstNameController,
+
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.person),
+                      labelText: 'Name',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(41),
+
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  TextField(
+                    controller: surNameController,
+
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.person),
+                      labelText: 'Surname',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(41),
+
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  TextField(
+                    controller: userNameController,
+
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.person),
+                      labelText: 'Username',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(41),
 
