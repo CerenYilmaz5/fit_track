@@ -24,12 +24,20 @@ class SignUpStep1 extends StatelessWidget {
     );
     if (emailRegex.hasMatch(email)) {
       try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: passwordController.text.trim(),
-
         );
 
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
+          'firstName': firstName,
+          'lastName': surName,
+          'username': userName,
+          'email': email,
+        });
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           print('The password provided is too weak.');

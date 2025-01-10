@@ -20,7 +20,7 @@ class profile_page extends StatelessWidget{
               height: 35,
               child: DecoratedBox(
                   decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: Colors.black12,
                       borderRadius: BorderRadius.circular(5)
                   ),
                   child: Row(
