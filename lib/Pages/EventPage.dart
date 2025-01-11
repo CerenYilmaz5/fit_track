@@ -96,7 +96,7 @@ class _EventsPageState extends State<EventsPage> {
               onTap: () async {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => profile_page()),
+                  MaterialPageRoute(builder: (context) =>profile_page()),
                 );
               },
             ),

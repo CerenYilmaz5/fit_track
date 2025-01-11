@@ -114,18 +114,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                 child: SizedBox(
                   width: 200,
                   height: 70,
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue[600],
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    ),
-                    label: const Text("Back",style: TextStyle(fontSize: 25),),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.arrow_back),
-                  ),
+
                 ),
               ),
               ],

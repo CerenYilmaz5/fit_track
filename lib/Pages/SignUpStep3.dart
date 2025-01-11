@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fit_track/Pages/EventPage.dart';
@@ -67,11 +66,9 @@ class SignUpStep3 extends StatelessWidget {
     }
     if(goalType == "proteinGoal") return (dailyCalories.toDouble() * proteinPercentage / 4); //protein calculation
     else if(goalType == "carbsGoal") return (dailyCalories.toDouble() * carbsPercentage / 4); //carbs calculation
-    else if (goalType == "fatGoal")return (dailyCalories.toDouble() * fatPercentage / 9);  //fatGoal calculation
+    else if (goalType == "fatGoal") return (dailyCalories.toDouble() * fatPercentage / 9);  //fatGoal calculation
     else return 0.0;
-
   }
-
 
   int calculateCalories() {
     // Retrieve user details

@@ -3,42 +3,57 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'SignUpStep2.dart';
-
-class profile_page extends StatelessWidget{
+class profile_page extends StatelessWidget {
   const profile_page({super.key});
 
   Future<List<Widget>> getStats() async {
-    try{
-      User? currentUser = FirebaseAuth.instance.currentUser;
-      if(currentUser != null){
-        DocumentSnapshot<Map<String, dynamic>> userInfo = await FirebaseFirestore.instance.collection("users").doc(currentUser.uid).get();
-        return userInfo.data()!.entries.map((entry){
-          return Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: SizedBox(
-              height: 35,
-              child: DecoratedBox(
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(5)
-                  ),
-                  child: Row(
-                    children: [
-                      SizedBox(width: 10,),
-                      Expanded(flex:2, child: Text("${entry.key}",style: TextStyle(fontSize: 20))),
-                      Expanded(flex:1,child: Text("${entry.value}",style: TextStyle(fontSize: 20))),
-                    ],
-                  )
-              ),
-            ),
+    try {
+      User? currentUser  = FirebaseAuth.instance.currentUser ;
+      if (currentUser  != null) {
+        DocumentSnapshot<Map<String, dynamic>> userInfo = await FirebaseFirestore.instance.collection("users").doc(currentUser .uid).get();
+        var userData = userInfo.data();
 
-          );
-        }).toList();
-      }else{
+        if (userData != null) {
+          List<Map<String, dynamic>> sortedData = [
+            {'Username': userData['username']},
+            {'Age': userData['age']},
+            {'Weight': userData['weight']},
+            {'Height': userData['height']},
+            {'Neck Circumference': userData['neck_circumference']},
+            {'Waist Circumference': userData['waist_circumference']},
+            {'Hip Circumference': userData['hip_circumference']},
+            {'Goal': userData['goal']},
+            {'Available Days': userData['available_days']},
+            {'Fitness Level': userData['fitness_level']},
+            {'Gender': userData['gender']},
+          ];
+
+          return sortedData.map((entry) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
+              child: Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("${entry.keys.first}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                      Text("${entry.values.first}", style: TextStyle(fontSize: 18)),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }).toList();
+        }
+      } else {
         print("No user was signed in");
       }
-    }catch(e){
+    } catch (e) {
       print("Something went wrong");
     }
     return [];
@@ -49,7 +64,7 @@ class profile_page extends StatelessWidget{
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "User Profile",
+          "Profile Information",
           style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
@@ -61,46 +76,49 @@ class profile_page extends StatelessWidget{
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(
-              child: Text("Error: ${snapshot.error}", style: const TextStyle(fontSize: 18)),
-            );
-          } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView(
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData && snapshot.data != null) {
+            return SingleChildScrollView(
+              child: Column(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.grey,
-                          child: Icon(
-                              size: 50,
-                              Icons.person,
-                              color: Colors.grey.shade700,
-                          )
+                  Container(
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.redAccent, Colors.red],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      Text("User Info",style: TextStyle(fontSize: 30),),
-                      const SizedBox(height: 20),
-                      ...snapshot.data!,
-                      const SizedBox(height: 10),
-                      ElevatedButton(
-                          onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpStep2()));
-                          },
-                          style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
-                          child: Text("Edit User Info",style: TextStyle(fontSize: 20,color: Colors.white),)
-                      )
-                    ],
-                  )
-                ]
+                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+                    ),
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: AssetImage('lib/assets/profile_pic.png'),
+                          backgroundColor: Colors.white,
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          "User  Profile",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    children: snapshot.data!,
+                  ),
+                ],
               ),
             );
           } else {
-            return const Center(
-              child: Text("No data available", style: TextStyle(fontSize: 18)),
-            );
+            return const Center(child: Text('No data available.'));
           }
         },
       ),
