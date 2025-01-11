@@ -73,6 +73,8 @@ flutter:
     - lib/assets/logo.jpg
     - lib/assets/signup_bckground.jpeg
     - lib/assets/deneme_resim.jpeg
+    - lib/assets/profile1.jpeg
+    - lib/assets/profile2.jpeg
   # - build/app/intermediates/assets/push-up (best).gif
   # - build/app/intermediates/assets/body_weight_squat.gif
   # - build/app/intermediates/assets/body_weight_squat.gif

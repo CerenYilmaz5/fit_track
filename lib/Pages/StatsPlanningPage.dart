@@ -55,7 +55,7 @@ class _StatsPlanningState extends State<StatsPlanning> {
       bottomNavigationBar: bottom_nav_bar(current_index: 1,),
       body: Container(
        decoration: const BoxDecoration(
-          color: Colors.black54
+          color: Colors.white70
         ),
         child: Center(
           child: Column(

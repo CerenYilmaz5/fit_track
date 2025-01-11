@@ -1,66 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'SignUpStep2.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
-  Future<List<Widget>> getStats() async {
+  Future<Map<String, dynamic>?> getUserData() async {
     try {
       User? currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser != null) {
-        DocumentSnapshot<Map<String, dynamic>> userInfo = await FirebaseFirestore.instance.collection("users").doc(currentUser.uid).get();
-        var userData = userInfo.data();
-
-        if (userData != null) {
-          List<Map<String, dynamic>> sortedData = [
-            {'Username': userData['username']},
-            {'Age': userData['age']},
-            {'Weight': userData['weight']},
-            {'Height': userData['height']},
-            {'Neck Circumference': userData['neck_circumference']},
-            {'Waist Circumference': userData['waist_circumference']},
-            {'Hip Circumference': userData['hip_circumference']},
-            {'Goal': userData['goal']},
-            {'Available Days': userData['available_days']},
-            {'Fitness Level': userData['fitness_level']},
-            {'Gender': userData['gender']},
-          ];
-
-          return sortedData.map((entry) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
-                decoration: BoxDecoration(
-                  color: Colors.blueAccent.shade100,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.4),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Expanded(flex: 3, child: Text("${entry.keys.first}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500))),
-                    Expanded(flex: 2, child: Text("${entry.values.first}", style: TextStyle(fontSize: 18))),
-                  ],
-                ),
-              ),
-            );
-          }).toList();
-        }
+        DocumentSnapshot<Map<String, dynamic>> userInfo = await FirebaseFirestore.instance
+            .collection("users")
+            .doc(currentUser.uid)
+            .get();
+        return userInfo.data();
       }
     } catch (e) {
-      print("Something went wrong");
+      print("Something went wrong: $e");
     }
-    return [];
+    return null;
   }
 
   @override
@@ -74,14 +33,20 @@ class ProfilePage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.redAccent,
       ),
-      body: FutureBuilder<List<Widget>>(
-        future: getStats(),
+      body: FutureBuilder<Map<String, dynamic>?>(
+        future: getUserData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData && snapshot.data != null) {
+            var userData = snapshot.data!;
+            String gender = userData['gender'] ?? 'male';
+            String profileImage = gender == 'female'
+                ? 'lib/assets/profile2.jpeg'
+                : 'lib/assets/profile1.jpeg';
+
             return SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -105,7 +70,7 @@ class ProfilePage extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             radius: 60,
-                            backgroundImage: AssetImage('lib/assets/profile_pic.png'),
+                            backgroundImage: AssetImage(profileImage),
                             backgroundColor: Colors.white,
                           ),
                           const SizedBox(height: 12),
@@ -118,15 +83,47 @@ class ProfilePage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          const Text(
-                            "",
-                            style: TextStyle(fontSize: 16, color: Colors.white70),
-                          ),
                         ],
                       ),
                     ),
                     const SizedBox(height: 30),
-                    ...snapshot.data!,
+                    ...userData.entries.map((entry) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                          decoration: BoxDecoration(
+                            color: Colors.blueAccent.shade100,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.4),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  "${entry.key}",
+                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  "${entry.value}",
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
                     const SizedBox(height: 30),
                     ElevatedButton(
                       onPressed: () {
