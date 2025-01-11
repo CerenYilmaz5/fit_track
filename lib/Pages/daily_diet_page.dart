@@ -254,7 +254,7 @@ class _DailyDietPageState extends State<DailyDietPage> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: showAddFoodDialog,
-                child: const Text("Add New Food",style: TextStyle(color: Colors.white)),
+                child: const Text("Meals You've Eaten Today",style: TextStyle(color: Colors.white)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.redAccent,
                   shape: RoundedRectangleBorder(
@@ -279,7 +279,7 @@ class _DailyDietPageState extends State<DailyDietPage> {
               ),
               const SizedBox(height: 20),
               const Text(
-                "Added Foods",
+                "Meals You've Eaten Today",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
               ),
               const SizedBox(height: 10),
