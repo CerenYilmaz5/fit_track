@@ -22,6 +22,30 @@ class _EventsPageState extends State<EventsPage> {
     eventsStream = FirebaseFirestore.instance.collection('events').snapshots();
   }
 
+  void handleLogout(BuildContext context) async {
+    final firebaseAuth = FirebaseAuth.instance;
+
+    try {
+      await firebaseAuth.signOut();
+
+      // Navigate after successful logout
+      if (context.mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FitnessLoginPage(title: 'Fit Track Login'),
+          ),
+        );
+      }
+    } catch (e) {
+      // Handle errors (e.g., show a snackbar)
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to log out: ${e.toString()}')),
+        );
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +93,7 @@ class _EventsPageState extends State<EventsPage> {
                 "Profile",
                 style: TextStyle(color: Colors.black, fontSize: 20),
               ),
-              onTap: () {
+              onTap: () async {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => profile_page()),
@@ -82,13 +106,7 @@ class _EventsPageState extends State<EventsPage> {
                 "Log Out",
                 style: TextStyle(color: Colors.black, fontSize: 20),
               ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => FitnessLoginPage(title: 'Fit Track Login')),
-                );
-              },
+              onTap: () => handleLogout(context),
             ),
           ],
         ),
@@ -257,8 +275,9 @@ class EventDetailsPage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   final docRef = FirebaseFirestore.instance.collection('events').doc(event['id']);
+                  final userRef = await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get();
                   final newComment = {
-                    'name': 'Anonymous', // Replace with actual user's name if available
+                    'name': userRef['username']??"Anonymous", // Replace with actual user's name if available
                     'comment': commentController.text,
                   };
                   await docRef.update({

@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fit_track/Pages/EventPage.dart';
 import 'package:fit_track/Pages/SignUpStep2.dart';
-import 'package:fit_track/Pages/StatsPlanningPage.dart';
 import 'package:flutter/material.dart';
 
 class SignUpStep3 extends StatelessWidget {
@@ -37,6 +37,39 @@ class SignUpStep3 extends StatelessWidget {
     }
 
     return (weight / pow(height / 100, 2)).round();
+  }
+
+  double calculateMacronutrients(String goal, int dailyCalories, String goalType) {
+    double proteinPercentage = 0.0;
+    double carbsPercentage = 0.0;
+    double fatPercentage = 0.0;
+
+    switch (goal) {
+      case "Bulk":
+        proteinPercentage = 0.25;
+        carbsPercentage = 0.55;
+        fatPercentage = 0.20;
+        break;
+      case "Definition":
+        proteinPercentage = 0.35;
+        carbsPercentage = 0.45;
+        fatPercentage = 0.20;
+        break;
+      case "Weight Loss":
+        proteinPercentage = 0.30;
+        carbsPercentage = 0.40;
+        fatPercentage = 0.30;
+        break;
+      default:
+        proteinPercentage = 0.20;
+        carbsPercentage = 0.50;
+        fatPercentage = 0.30;
+    }
+    if(goalType == "proteinGoal") return (dailyCalories.toDouble() * proteinPercentage / 4); //protein calculation
+    else if(goalType == "carbsGoal") return (dailyCalories.toDouble() * carbsPercentage / 4); //carbs calculation
+    else if (goalType == "fatGoal")return (dailyCalories.toDouble() * fatPercentage / 9);  //fatGoal calculation
+    else return 0.0;
+
   }
 
 
@@ -93,6 +126,7 @@ class SignUpStep3 extends StatelessWidget {
         int bfp = calculateBFP();
 
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'username': signUpStep2.usernameController.text.trim(),
           'age': signUpStep2.ageController.text.trim(),
           'weight': signUpStep2.weightController.text.trim(),
           'height': signUpStep2.heightController.text.trim(),
@@ -106,6 +140,14 @@ class SignUpStep3 extends StatelessWidget {
           'daily_calories': dailyCalories,
           'bmi': bmi,
           'bfp':bfp,
+          'proteinGoal':calculateMacronutrients(selectedGoal.value!, dailyCalories, "proteinGoal"),
+          'fatGoal':calculateMacronutrients(selectedGoal.value!, dailyCalories, "fatGoal"),
+          'carbsGoal':calculateMacronutrients(selectedGoal.value!, dailyCalories, "carbsGoal"),
+          'consumedCalories': 0.0,
+          'proteinConsumed': 0.0,
+          'carbsConsumed': 0.0,
+          'fatConsumed': 0.0,
+          'foodItems':[],
         });
 
         print("User details and daily calories added to Firestore");
@@ -228,7 +270,7 @@ class SignUpStep3 extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => StatsPlanning(),
+                                builder: (context) => EventsPage(),
                               ),
                             );
                           }

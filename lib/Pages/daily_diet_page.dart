@@ -36,11 +36,9 @@ class _DailyDietPageState extends State<DailyDietPage> {
 
   @override
   void initState() {
-    print("hey");
     super.initState();
     userId = _auth.currentUser!.uid;
     _loadUserData();
-    calculateMacronutrients(goal, dailyCalories.toDouble());
   }
 
   Future<void> _loadUserData() async {
@@ -55,8 +53,10 @@ class _DailyDietPageState extends State<DailyDietPage> {
         foodItems = List<Map<String, dynamic>>.from(userDoc['foodItems'] ?? []);
         goal = userDoc['goal'] ?? "";
         dailyCalories = userDoc['daily_calories'].toDouble() ?? 0.0;
+        proteinGoal = userDoc['proteinGoal'] ?? 0.0;
+        fatGoal = userDoc['fatGoal'] ?? 0.0;
+        carbsGoal =  userDoc['carbsGoal'] ?? 0.0;
       });
-      calculateMacronutrients(goal, dailyCalories);
 
     }
   }

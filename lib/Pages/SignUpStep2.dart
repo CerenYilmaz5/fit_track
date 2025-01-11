@@ -6,12 +6,15 @@ class SignUpStep2 extends StatelessWidget {
 
   final ValueNotifier<String?> fitnessLevel = ValueNotifier<String?>(null);
   final ValueNotifier<String?> gender = ValueNotifier<String?>(null);
+  final usernameController = TextEditingController();
   final ageController = TextEditingController();
   final weightController = TextEditingController();
   final heightController = TextEditingController();
   final neckCircumferenceController = TextEditingController();
   final waistCircumferenceController = TextEditingController();
   final hipCircumferenceController = TextEditingController();
+
+
 
 
 
@@ -111,6 +114,8 @@ class SignUpStep2 extends StatelessWidget {
                         );
                       },
                   ),
+                  const SizedBox(height: 20),
+                  UserTextField(text: "Username", controller: usernameController),
                   const SizedBox(height: 20),
                   UserTextField(text: 'Age', controller: ageController,),
                   const SizedBox(height: 20),
