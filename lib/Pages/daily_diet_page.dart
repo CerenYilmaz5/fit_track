@@ -136,7 +136,7 @@ class _DailyDietPageState extends State<DailyDietPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Add New Food"),
+          title: const Text("Meals You've Eaten Today"),
           content: SingleChildScrollView(
             child: Column(
               children: [
@@ -269,7 +269,7 @@ class _DailyDietPageState extends State<DailyDietPage> {
                     MaterialPageRoute(builder: (context) => RecipeRecommendation(minCalories: (dailyCalories.toDouble() / 7).toInt())),
                   );
                 },
-                child: const Text("Look for Recipes",style: TextStyle(color: Colors.white)),
+                child: const Text("Look for Recommended Recipes",style: TextStyle(color: Colors.white)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.redAccent,
                   shape: RoundedRectangleBorder(
