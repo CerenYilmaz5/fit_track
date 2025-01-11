@@ -1,25 +1,66 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'SignUpStep2.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
-  Future<Map<String, dynamic>?> getUserData() async {
+  Future<Map<String, dynamic>> getUserData() async {
     try {
       User? currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser != null) {
-        DocumentSnapshot<Map<String, dynamic>> userInfo = await FirebaseFirestore.instance
-            .collection("users")
-            .doc(currentUser.uid)
-            .get();
-        return userInfo.data();
+        DocumentSnapshot<Map<String, dynamic>> userInfo = await FirebaseFirestore.instance.collection("users").doc(currentUser.uid).get();
+        return userInfo.data() ?? {};
       }
     } catch (e) {
       print("Something went wrong: $e");
     }
-    return null;
+    return {};
+  }
+
+  List<Widget> buildStats(Map<String, dynamic> userData) {
+    List<Map<String, dynamic>> sortedData = [
+      {'Username': userData['username']},
+      {'Age': userData['age']},
+      {'Weight': userData['weight']},
+      {'Height': userData['height']},
+      {'Neck Circumference': userData['neck_circumference']},
+      {'Waist Circumference': userData['waist_circumference']},
+      {'Hip Circumference': userData['hip_circumference']},
+      {'Goal': userData['goal']},
+      {'Available Days': userData['available_days']},
+      {'Fitness Level': userData['fitness_level']},
+      {'Gender': userData['gender']},
+    ];
+
+    return sortedData.map((entry) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+          decoration: BoxDecoration(
+            color: Colors.blueAccent.shade100,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.4),
+                spreadRadius: 2,
+                blurRadius: 5,
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Expanded(flex: 3, child: Text("${entry.keys.first}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500))),
+              Expanded(flex: 2, child: Text("${entry.values.first}", style: TextStyle(fontSize: 18))),
+            ],
+          ),
+        ),
+      );
+    }).toList();
   }
 
   @override
@@ -33,14 +74,14 @@ class ProfilePage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.redAccent,
       ),
-      body: FutureBuilder<Map<String, dynamic>?>(
+      body: FutureBuilder<Map<String, dynamic>>(
         future: getUserData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData && snapshot.data != null) {
+          } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
             var userData = snapshot.data!;
             String gender = userData['gender'] ?? 'male';
             String profileImage = gender == 'female'
@@ -82,48 +123,11 @@ class ProfilePage extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                          const SizedBox(height: 8),
                         ],
                       ),
                     ),
                     const SizedBox(height: 30),
-                    ...userData.entries.map((entry) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
-                          decoration: BoxDecoration(
-                            color: Colors.blueAccent.shade100,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.4),
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "${entry.key}",
-                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  "${entry.value}",
-                                  style: const TextStyle(fontSize: 18),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }).toList(),
+                    ...buildStats(userData),
                     const SizedBox(height: 30),
                     ElevatedButton(
                       onPressed: () {
