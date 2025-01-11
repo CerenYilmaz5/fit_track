@@ -5,40 +5,59 @@ import 'package:flutter/material.dart';
 
 import 'SignUpStep2.dart';
 
-class profile_page extends StatelessWidget{
-  const profile_page({super.key});
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
   Future<List<Widget>> getStats() async {
-    try{
+    try {
       User? currentUser = FirebaseAuth.instance.currentUser;
-      if(currentUser != null){
+      if (currentUser != null) {
         DocumentSnapshot<Map<String, dynamic>> userInfo = await FirebaseFirestore.instance.collection("users").doc(currentUser.uid).get();
-        return userInfo.data()!.entries.map((entry){
-          return Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: SizedBox(
-              height: 35,
-              child: DecoratedBox(
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(5)
-                  ),
-                  child: Row(
-                    children: [
-                      SizedBox(width: 10,),
-                      Expanded(flex:2, child: Text("${entry.key}",style: TextStyle(fontSize: 20))),
-                      Expanded(flex:1,child: Text("${entry.value}",style: TextStyle(fontSize: 20))),
-                    ],
-                  )
-              ),
-            ),
+        var userData = userInfo.data();
 
-          );
-        }).toList();
-      }else{
-        print("No user was signed in");
+        if (userData != null) {
+          List<Map<String, dynamic>> sortedData = [
+            {'Username': userData['username']},
+            {'Age': userData['age']},
+            {'Weight': userData['weight']},
+            {'Height': userData['height']},
+            {'Neck Circumference': userData['neck_circumference']},
+            {'Waist Circumference': userData['waist_circumference']},
+            {'Hip Circumference': userData['hip_circumference']},
+            {'Goal': userData['goal']},
+            {'Available Days': userData['available_days']},
+            {'Fitness Level': userData['fitness_level']},
+            {'Gender': userData['gender']},
+          ];
+
+          return sortedData.map((entry) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                decoration: BoxDecoration(
+                  color: Colors.blueAccent.shade100,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.4),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Expanded(flex: 3, child: Text("${entry.keys.first}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500))),
+                    Expanded(flex: 2, child: Text("${entry.values.first}", style: TextStyle(fontSize: 18))),
+                  ],
+                ),
+              ),
+            );
+          }).toList();
+        }
       }
-    }catch(e){
+    } catch (e) {
       print("Something went wrong");
     }
     return [];
@@ -49,7 +68,7 @@ class profile_page extends StatelessWidget{
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "User Profile",
+          "Profile Information",
           style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
@@ -61,46 +80,77 @@ class profile_page extends StatelessWidget{
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(
-              child: Text("Error: ${snapshot.error}", style: const TextStyle(fontSize: 18)),
-            );
-          } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.grey,
-                          child: Icon(
-                              size: 50,
-                              Icons.person,
-                              color: Colors.grey.shade700,
-                          )
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData && snapshot.data != null) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.redAccent,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.4),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                          ),
+                        ],
                       ),
-                      Text("User Info",style: TextStyle(fontSize: 30),),
-                      const SizedBox(height: 20),
-                      ...snapshot.data!,
-                      const SizedBox(height: 10),
-                      ElevatedButton(
-                          onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpStep2()));
-                          },
-                          style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
-                          child: Text("Edit User Info",style: TextStyle(fontSize: 20,color: Colors.white),)
-                      )
-                    ],
-                  )
-                ]
+                      child: Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 60,
+                            backgroundImage: AssetImage('lib/assets/profile_pic.png'),
+                            backgroundColor: Colors.white,
+                          ),
+                          const SizedBox(height: 12),
+                          const Text(
+                            "User Profile",
+                            style: TextStyle(
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            "",
+                            style: TextStyle(fontSize: 16, color: Colors.white70),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    ...snapshot.data!,
+                    const SizedBox(height: 30),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpStep2()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.redAccent,
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 5,
+                      ),
+                      child: const Text(
+                        "Edit Profile",
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           } else {
-            return const Center(
-              child: Text("No data available", style: TextStyle(fontSize: 18)),
-            );
+            return const Center(child: Text('No data available.'));
           }
         },
       ),
