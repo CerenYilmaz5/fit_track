@@ -203,7 +203,7 @@ class DefinitionProgram {
     {
       return [
         [
-          {"name": "Barbell Bench Press 4x8", "details": "Lying on a bench, lower the bar towards your chest and raise it back up in a controlled manner. Work your chest and triceps muscles by doing 8 reps in each set.", "gif": ""},
+          {"name": "Barbell Bench Press 4x8", "details": "Lying on a bench, lower the bar towards your chest and raise it back up in a controlled manner. Work your chest and triceps muscles by doing 8 reps in each set.", "gif": "lib/assets/male-barbell-bench-press-front.gif"},
           {"name": "Incline Barbell Press 4x10", "details": "Set the bench in an incline position (about 45 degrees) and press the bar up to target your upper pecs. Do 4 sets of 10 reps.", "gif": ""},
           {"name": "Barbell Row 4x8", "details": "Stand with your feet shoulder-width apart, bend your knees slightly, and pull the bar toward your waist. Do 4 sets of 8 reps, targeting your back muscles.", "gif": ""},
           {"name": "Barbell Squat 4x10", "details": "Place the bar on your trapezius muscles. Squat down completely by bending your knees and pushing your hips back, then stand up. Strengthen your leg and hip muscles by doing 4 sets of 10 reps.", "gif": ""},
